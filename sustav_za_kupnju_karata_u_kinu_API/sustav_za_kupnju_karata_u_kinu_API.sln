@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sustav_za_kupnju_karata_u_kinu_API", "sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API.csproj", "{DD937340-E52A-47C9-8096-3758FFD36ECE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD937340-E52A-47C9-8096-3758FFD36ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD937340-E52A-47C9-8096-3758FFD36ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD937340-E52A-47C9-8096-3758FFD36ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD937340-E52A-47C9-8096-3758FFD36ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69CE5DBA-3FEA-419F-87D9-519D6C3BE7AD}
+	EndGlobalSection
+EndGlobal

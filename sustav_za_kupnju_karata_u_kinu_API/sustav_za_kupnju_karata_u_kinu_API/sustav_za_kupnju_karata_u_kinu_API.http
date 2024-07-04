@@ -1,0 +1,6 @@
+@sustav_za_kupnju_karata_u_kinu_API_HostAddress = http://localhost:5138
+
+GET {{sustav_za_kupnju_karata_u_kinu_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
