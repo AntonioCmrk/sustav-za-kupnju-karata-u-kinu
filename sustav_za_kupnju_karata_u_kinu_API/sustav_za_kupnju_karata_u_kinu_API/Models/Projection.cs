@@ -1,4 +1,6 @@
-﻿namespace sustav_za_kupnju_karata_u_kinu_API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace sustav_za_kupnju_karata_u_kinu_API.Models
 {
 	public class Projection
 	{
@@ -10,6 +12,7 @@
 		public int? AuditoriumId { get; set; }
 		public Auditorium? Auditorium { get; set; }
 		public DateTime DateTime { get; set; }
+		[Column(TypeName = "decimal(3,2)")]
 		public decimal Price { get; set; }
 	}
 }

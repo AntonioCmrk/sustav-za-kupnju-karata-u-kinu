@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\sustav_za_kupnju_karata_u_kinu_API.props" />
+</Project>
