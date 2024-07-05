@@ -1,0 +1,12 @@
+﻿namespace sustav_za_kupnju_karata_u_kinu_API.Models
+{
+	public class Address
+	{
+		public int PostalCode { get; set; }
+		public string City { get; set; } = string.Empty;
+		public string Country { get; set; } = string.Empty;
+		public string StreetName { get; set; } = string.Empty;
+		public int HouseNumber { get; set; }
+		public List<Cinema> Cinemas { get; set; } = new List<Cinema>();
+	}
+}
