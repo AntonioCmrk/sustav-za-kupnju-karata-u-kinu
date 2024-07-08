@@ -13,7 +13,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Mappers
 				Id = cinemaModel.Id,
 				Name = cinemaModel.Name,
 				NumberOfAuditoriums = cinemaModel.NumberOfAuditoriums,
-				AddressId = cinemaModel.AddressId,
 				NumberOfSeats = cinemaModel.NumberOfSeats
 			};
 		}
@@ -24,7 +23,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Mappers
 				Name = cinemaDto.Name,
 				NumberOfAuditoriums = cinemaDto.NumberOfAuditoriums,
 				NumberOfSeats = cinemaDto.NumberOfSeats,
-				AddressId = cinemaDto.AddressId,
+
 			};
 		}
 	}

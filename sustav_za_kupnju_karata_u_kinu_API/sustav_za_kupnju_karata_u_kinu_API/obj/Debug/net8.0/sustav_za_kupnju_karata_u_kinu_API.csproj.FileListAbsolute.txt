@@ -135,3 +135,7 @@ D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karat
 D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\obj\Debug\net8.0\sustav_za_kupnju_karata_u_kinu_API.pdb
 D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\obj\Debug\net8.0\sustav_za_kupnju_karata_u_kinu_API.genruntimeconfig.cache
 D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\obj\Debug\net8.0\ref\sustav_za_kupnju_karata_u_kinu_API.dll
+D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\acmrk\Desktop\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

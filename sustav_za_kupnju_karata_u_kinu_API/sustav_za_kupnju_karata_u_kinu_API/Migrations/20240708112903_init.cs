@@ -12,20 +12,18 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Cinemas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PostalCode = table.Column<int>(type: "int", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HouseNumber = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfAuditoriums = table.Column<int>(type: "int", nullable: false),
+                    NumberOfSeats = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Cinemas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,23 +49,25 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cinemas",
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NumberOfAuditoriums = table.Column<int>(type: "int", nullable: false),
-                    NumberOfSeats = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: true)
+                    PostalCode = table.Column<int>(type: "int", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HouseNumber = table.Column<int>(type: "int", nullable: false),
+                    CinemaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cinemas", x => x.Id);
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cinemas_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
+                        name: "FK_Address_Cinemas_CinemaId",
+                        column: x => x.CinemaId,
+                        principalTable: "Cinemas",
                         principalColumn: "Id");
                 });
 
@@ -101,7 +101,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     MovieId = table.Column<int>(type: "int", nullable: true),
                     AuditoriumId = table.Column<int>(type: "int", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(3,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,14 +144,16 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Address_CinemaId",
+                table: "Address",
+                column: "CinemaId",
+                unique: true,
+                filter: "[CinemaId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Auditoriums_CinemaId",
                 table: "Auditoriums",
                 column: "CinemaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cinemas_AddressId",
-                table: "Cinemas",
-                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projections_AuditoriumId",
@@ -178,6 +180,9 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Address");
+
+            migrationBuilder.DropTable(
                 name: "Projections");
 
             migrationBuilder.DropTable(
@@ -191,9 +196,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cinemas");
-
-            migrationBuilder.DropTable(
-                name: "Address");
         }
     }
 }

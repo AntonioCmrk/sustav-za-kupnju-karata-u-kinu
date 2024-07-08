@@ -12,7 +12,7 @@ using sustav_za_kupnju_karata_u_kinu_API.Data;
 namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240705064015_init")]
+    [Migration("20240708112903_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CinemaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -52,6 +55,10 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CinemaId")
+                        .IsUnique()
+                        .HasFilter("[CinemaId] IS NOT NULL");
 
                     b.ToTable("Address");
                 });
@@ -89,9 +96,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,8 +107,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Cinemas");
                 });
@@ -181,7 +183,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(3,2)");
 
                     b.HasKey("Id");
 
@@ -218,6 +220,15 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     b.ToTable("Seats");
                 });
 
+            modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Address", b =>
+                {
+                    b.HasOne("sustav_za_kupnju_karata_u_kinu_API.Models.Cinema", "Cinema")
+                        .WithOne("Address")
+                        .HasForeignKey("sustav_za_kupnju_karata_u_kinu_API.Models.Address", "CinemaId");
+
+                    b.Navigation("Cinema");
+                });
+
             modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Auditorium", b =>
                 {
                     b.HasOne("sustav_za_kupnju_karata_u_kinu_API.Models.Cinema", "Cinema")
@@ -225,15 +236,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                         .HasForeignKey("CinemaId");
 
                     b.Navigation("Cinema");
-                });
-
-            modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Cinema", b =>
-                {
-                    b.HasOne("sustav_za_kupnju_karata_u_kinu_API.Models.Address", "Address")
-                        .WithMany("Cinemas")
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Projection", b =>
@@ -266,11 +268,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     b.Navigation("Auditorium");
                 });
 
-            modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Address", b =>
-                {
-                    b.Navigation("Cinemas");
-                });
-
             modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Auditorium", b =>
                 {
                     b.Navigation("Projections");
@@ -280,6 +277,8 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
             modelBuilder.Entity("sustav_za_kupnju_karata_u_kinu_API.Models.Cinema", b =>
                 {
+                    b.Navigation("Address");
+
                     b.Navigation("Auditoriums");
 
                     b.Navigation("Projections");

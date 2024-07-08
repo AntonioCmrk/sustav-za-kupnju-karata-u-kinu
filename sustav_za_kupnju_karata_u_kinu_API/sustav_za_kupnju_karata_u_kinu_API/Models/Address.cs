@@ -8,6 +8,7 @@
 		public string Country { get; set; } = string.Empty;
 		public string StreetName { get; set; } = string.Empty;
 		public int HouseNumber { get; set; }
-		public List<Cinema> Cinemas { get; set; } = new List<Cinema>();
+		public int? CinemaId { get; set; }
+		public Cinema? Cinema { get; set; }
 	}
 }

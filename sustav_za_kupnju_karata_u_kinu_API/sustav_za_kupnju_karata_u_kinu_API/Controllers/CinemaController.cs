@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
+using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Mappers;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
@@ -9,23 +11,26 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 	[ApiController]
 	public class CinemaController : ControllerBase
 	{
+		private readonly ICinemaRepository _cinemaRepo;
 		private readonly ApplicationDBContext _context;
-		public CinemaController(ApplicationDBContext context)
+		public CinemaController(ApplicationDBContext context, ICinemaRepository cinemaRepo)
 		{
+			_cinemaRepo = cinemaRepo;
 			_context = context;
 		}
 
 		[HttpGet]
-		public IActionResult GetAll()
+		public async Task<IActionResult> GetAll()
 		{
-			var cinemas = _context.Cinemas.ToList().Select(s => s.ToCinemaDto());
+			var cinemas = await _cinemaRepo.GetAllAsync();
+			var cinemaDto = cinemas.Select(s => s.ToCinemaDto());
 			return Ok(cinemas);
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult GetById([FromRoute] int id)
+		public async Task<IActionResult> GetById([FromRoute] int id)
 		{
-			var cinema = _context.Cinemas.Find(id);
+			var cinema = await _cinemaRepo.GetByIdAsync(id);
 			if (cinema == null)
 			{
 				return NotFound();
@@ -34,12 +39,36 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create([FromBody] CreateCinemaRequestDto cinemaDto)
+		public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto cinemaDto)
 		{
 			var cinemaModel = cinemaDto.ToCinemaFromCreateDTO();
-			_context.Cinemas.Add(cinemaModel);
-			_context.SaveChanges();
+			await _cinemaRepo.CreateAsync(cinemaModel);
 			return CreatedAtAction(nameof(GetById), new { id = cinemaModel.Id }, cinemaModel.ToCinemaDto());
+		}
+
+		[HttpPut]
+		[Route("{id}")]
+		public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCinemaRequestDto updateDto)
+		{
+			var cinemaModel = await _cinemaRepo.UpdateAsync(id, updateDto);
+			if (cinemaModel == null)
+			{
+				return NotFound();
+			}
+			return Ok(cinemaModel.ToCinemaDto());
+		}
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var cinemaModel = await _cinemaRepo.DeleteAsync(id);
+
+			if (cinemaModel == null)
+			{
+				return NotFound();
+			}
+			return NoContent();
 		}
 	}
 }

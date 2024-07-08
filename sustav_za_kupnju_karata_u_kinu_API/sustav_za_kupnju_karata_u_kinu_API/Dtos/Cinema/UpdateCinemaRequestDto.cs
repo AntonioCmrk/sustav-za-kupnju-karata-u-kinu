@@ -1,8 +1,6 @@
-﻿using sustav_za_kupnju_karata_u_kinu_API.Models;
-
-namespace sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema
+﻿namespace sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema
 {
-	public class CreateCinemaRequestDto
+	public class UpdateCinemaRequestDto
 	{
 		public string Name { get; set; } = string.Empty;
 		public int NumberOfAuditoriums { get; set; }

@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
+using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
+using sustav_za_kupnju_karata_u_kinu_API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +12,18 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
 
 var app = builder.Build();
 
