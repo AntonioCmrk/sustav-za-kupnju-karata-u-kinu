@@ -36,12 +36,12 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
 
 		public async Task<List<Cinema>> GetAllAsync()
 		{
-			return await _context.Cinemas.ToListAsync();
+			return await _context.Cinemas.Include(x => x.Address).ToListAsync();
 		}
 
 		public async Task<Cinema?> GetByIdAsync(int id)
 		{
-			return await _context.Cinemas.FindAsync(id);
+			return await _context.Cinemas.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<Cinema?> UpdateAsync(int id, UpdateCinemaRequestDto cinemaDto)

@@ -7,16 +7,15 @@ using sustav_za_kupnju_karata_u_kinu_API.Mappers;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
-	[Route("api/cinema")]
+	[Route("api/[Controller]")]
 	[ApiController]
 	public class CinemaController : ControllerBase
 	{
 		private readonly ICinemaRepository _cinemaRepo;
-		private readonly ApplicationDBContext _context;
-		public CinemaController(ApplicationDBContext context, ICinemaRepository cinemaRepo)
+
+		public CinemaController(ICinemaRepository cinemaRepo)
 		{
 			_cinemaRepo = cinemaRepo;
-			_context = context;
 		}
 
 		[HttpGet]
@@ -35,7 +34,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			{
 				return NotFound();
 			}
-			return Ok(cinema.ToCinemaDto());
+			return Ok(cinema);
 		}
 
 		[HttpPost]
