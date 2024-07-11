@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import { MainLayout } from "./layout/MainLayout";
 import { NavigationRoutes } from "./navigation/NavigationRoutes";
@@ -7,6 +8,7 @@ function App() {
     <>
       <MainLayout>
         <NavigationRoutes />
+        <Toaster />
       </MainLayout>
     </>
   );
