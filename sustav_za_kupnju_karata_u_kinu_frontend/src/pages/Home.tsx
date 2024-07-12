@@ -1,5 +1,3 @@
-import React from "react";
-import background from "../assets/homeBackground.jpg";
 import { CinemaCard } from "../components/CinemaCard";
 import { Link } from "react-router-dom";
 export const Home = () => {

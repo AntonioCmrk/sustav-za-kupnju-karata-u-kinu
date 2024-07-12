@@ -1,18 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowDownCircleOutline,
-  Close,
-  LogIn,
-  LogOut,
-  Menu,
-} from "react-ionicons";
+import { Close, LogIn, LogOut, Menu } from "react-ionicons";
 import toast from "react-hot-toast";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [logoutMenu, setLogoutMenu] = useState(false);
   const isLoggedIn = "true";
   return (
     <div className="bg-primary w-[99%] h-16  rounded-full my-2">
@@ -36,63 +29,67 @@ export const Navbar = () => {
         >
           On the program
         </li>
+      </ul>
+      <div className="absolute p-4 right-4 top-3 flex gap-4 text-terary-light">
         <button
           name="login"
-          className={`absolute p-4 right-4 top-4  cursor-pointer  flex align-middle justify-center ${
+          className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
             isLoggedIn === "true" ? "hidden" : ""
           }`}
           onClick={() => {}}
         >
-          <LogIn color="#4C1D95" /> Log in
+          <span>Log in</span>
+          <LogIn color="#c7fdfd" title={"Log in"} />
         </button>
         <button
-          name="username"
-          className={`hover:outline outline-violet-800 rounded-xl absolute p-2 right-4 top-3  cursor-pointer  flex align-middle justify-center ${
+          name="logout"
+          className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
             isLoggedIn === "true" ? "" : "hidden"
           }`}
-          id="dropdownDefaultButton"
-          data-dropdown-toggle="dropdown"
-          type="button"
-          onClick={() => {}}
+          onClick={() => {
+            toast("You have loged out successfully.", {
+              style: {
+                borderRadius: "20px",
+              },
+            });
+          }}
         >
-          <div className="mr-1 mt-[-0.15rem] flex flex-col relative">
-            <span>Signed in as </span>
-            <span className="text-violet-950 font-bold text-lg">username</span>
-          </div>
-          <div className="relative top-3 ml-2">
-            <ArrowDownCircleOutline color="#4C1D95" />
-          </div>
+          <LogOut color="#c7fdfd" /> Log out
         </button>
-        <div
-          className={`z-10  bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-slate-200 absolute right-7 top-20 ${
-            logoutMenu === true ? "" : "hidden"
-          }`}
-        ></div>
-      </ul>
-      <button
-        name="logout"
-        className={`p-4 cursor-pointer  flex align-middle justify-center`}
-        onClick={() => {
-          setLogoutMenu(false);
-          localStorage.setItem("isLoggedIn", "false");
-          localStorage.removeItem("username");
+        <button
+          name="menu"
+          className="text-3xl cursor-pointer md:xl xl:hidden max-xl:right-28"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          {menuOpen ? <Close color="#c7fdfd" /> : <Menu color="#c7fdfd" />}
+        </button>
+      </div>
+      {/* <button
+        name="username"
+        className={`hover:outline outline-violet-800 rounded-xl absolute p-2 right-4 top-3  cursor-pointer  flex align-middle justify-center ${
+          isLoggedIn === "true" ? "" : "hidden"
+        }`}
+        id="dropdownDefaultButton"
+        data-dropdown-toggle="dropdown"
+        type="button"
+        onClick={() => {}}
+      >
+        <div className="mr-1 mt-[-0.15rem] flex flex-col relative">
+          <span>Signed in as </span>
+          <span className="text-violet-950 font-bold text-lg">username</span>
+        </div>
+        <div className="relative top-3 ml-2">
+          <ArrowDownCircleOutline color="#4C1D95" />
+        </div>
+      </button>
+      <div
+        className={`z-10  bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-slate-200 absolute right-7 top-20 ${
+          logoutMenu === true ? "" : "hidden"
+        }`}
+      ></div>
 
-          toast("You have loged out successfully.", {
-            style: {
-              borderRadius: "20px",
-            },
-          });
-        }}
-      >
-        <LogOut color="#c7fdfd" /> Log out
-      </button>
-      <button
-        name="menu"
-        className="absolute p-4 right-4 top-4 text-3xl cursor-pointer md:xl xl:hidden max-xl:right-28"
-        onClick={() => setMenuOpen((prev) => !prev)}
-      >
-        {menuOpen ? <Close color="#c7fdfd" /> : <Menu color="#c7fdfd" />}
-      </button>
+      
+       */}
     </div>
   );
 };
