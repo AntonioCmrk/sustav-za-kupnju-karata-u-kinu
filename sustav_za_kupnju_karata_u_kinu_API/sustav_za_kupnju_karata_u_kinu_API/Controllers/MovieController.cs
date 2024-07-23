@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
+using sustav_za_kupnju_karata_u_kinu_API.Mappers;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
@@ -33,13 +34,13 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			return Ok(movie);
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto movieDto)
-		{
-			var movieModel = movieDto.ToCinemaFromCreateDTO();
-			await _movieRepo.CreateAsync(movieModel);
-			return CreatedAtAction(nameof(GetById), new { id = movieModel.Id }, movieModel.ToCinemaDto());
-		}
+		//[HttpPost]
+		//public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto movieDto)
+		//{
+		//	var movieModel = movieDto.ToCinemaFromCreateDTO();
+		//	await _movieRepo.CreateAsync(movieModel);
+		//	return CreatedAtAction(nameof(GetById), new { id = movieModel.Id }, movieModel.ToCinemaDto());
+		//}
 
 		//[HttpPut]
 		//[Route("{id}")]
