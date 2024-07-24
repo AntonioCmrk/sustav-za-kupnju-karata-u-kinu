@@ -23,7 +23,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 		{
 			var cinemas = await _cinemaRepo.GetAllAsync();
 			var cinemaDto = cinemas.Select(s => s.ToCinemaDto());
-			return Ok(cinemas);
+			return Ok(cinemaDto);
 		}
 
 		[HttpGet("{id}")]

@@ -4,7 +4,18 @@ using sustav_za_kupnju_karata_u_kinu_API.Data;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Repository;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: MyAllowSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("http://localhost:5173");
+					  });
+});
 
 // Add services to the container.
 
@@ -36,6 +47,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 

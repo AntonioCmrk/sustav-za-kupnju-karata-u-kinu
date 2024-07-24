@@ -1,4 +1,5 @@
-﻿using sustav_za_kupnju_karata_u_kinu_API.Models;
+﻿using sustav_za_kupnju_karata_u_kinu_API.Dtos.Address;
+using sustav_za_kupnju_karata_u_kinu_API.Models;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema
 {
@@ -8,6 +9,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema
 		public string Name { get; set; } = string.Empty;
 		public int NumberOfAuditoriums { get; set; }
 		public int NumberOfSeats { get; set; }
+		public AddressDto? AddressDto { get; set; }
 
 	}
 }
