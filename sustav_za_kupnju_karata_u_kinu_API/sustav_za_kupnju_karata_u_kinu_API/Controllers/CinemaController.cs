@@ -4,6 +4,7 @@ using sustav_za_kupnju_karata_u_kinu_API.Data;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Mappers;
+using sustav_za_kupnju_karata_u_kinu_API.Models;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
@@ -22,8 +23,8 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 		public async Task<IActionResult> GetAll()
 		{
 			var cinemas = await _cinemaRepo.GetAllAsync();
-			var cinemaDto = cinemas.Select(s => s.ToCinemaDto());
-			return Ok(cinemaDto);
+			var cinemasDto = cinemas.Select(s => s.ToCinemaDto());
+			return Ok(cinemasDto);
 		}
 
 		[HttpGet("{id}")]
@@ -34,7 +35,8 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			{
 				return NotFound();
 			}
-			return Ok(cinema);
+			var cinemaDto = cinema.ToCinemaDto();
+			return Ok(cinemaDto);
 		}
 
 		[HttpPost]
