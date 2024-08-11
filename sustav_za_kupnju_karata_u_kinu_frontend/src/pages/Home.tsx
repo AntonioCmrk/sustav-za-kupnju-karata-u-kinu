@@ -22,8 +22,3 @@ export const Home = () => {
     </div>
   );
 };
-{
-  /* <Link to={"/cinema-page"}>
-<CinemaCard />
-</Link> */
-}
