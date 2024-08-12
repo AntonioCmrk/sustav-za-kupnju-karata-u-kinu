@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Models;
 
@@ -18,6 +19,24 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Data
 		public DbSet<ProjectionReservation> ProjectionReservations { get; set; }
 		public DbSet<ReservationSeat> ReservationSeats { get; set; }
 		public DbSet<Seat> Seats { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+			List<IdentityRole> roles = new List<IdentityRole>
+			{
+				new IdentityRole
+				{
+					Name = "Admin",
+					NormalizedName = "ADMIN"
+				},
+				new IdentityRole
+				{
+					Name = "User",
+					NormalizedName = "USER"
+				}
+			}; 
+			builder.Entity<IdentityRole>().HasData(roles);
+        }
 
-	}
+    }
 }
