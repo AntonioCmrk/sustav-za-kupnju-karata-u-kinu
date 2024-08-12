@@ -7,6 +7,8 @@
 		public int? CinemaId { get; set; }
 		public Cinema? Cinema { get; set; }
 		public int NumberOfSeats { get; set; }
+		public int NumberOfRows { get; set; }
+		public int NumberOfColumns { get; set; }
 		public List<Projection> Projections { get; set; } = new List<Projection>();
 		public List<Seat> Seats { get; set; } = new List<Seat>();
 	}

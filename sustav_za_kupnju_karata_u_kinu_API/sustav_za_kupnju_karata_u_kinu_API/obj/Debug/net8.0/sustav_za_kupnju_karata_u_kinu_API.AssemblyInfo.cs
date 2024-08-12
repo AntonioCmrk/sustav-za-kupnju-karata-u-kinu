@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("sustav_za_kupnju_karata_u_kinu_API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5960716adebb92d88de618c2fb39e0a07f2cfea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e210c78bbbaeaabd65a9cb109bee8049b3ac55ac")]
 [assembly: System.Reflection.AssemblyProductAttribute("sustav_za_kupnju_karata_u_kinu_API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sustav_za_kupnju_karata_u_kinu_API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

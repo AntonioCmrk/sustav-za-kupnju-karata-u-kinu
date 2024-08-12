@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Models;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Data
 {
-	public class ApplicationDBContext : DbContext
+	public class ApplicationDBContext : IdentityDbContext<AppUser>
 	{
 		public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
 		{
@@ -14,6 +15,8 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Data
 		public DbSet<Cinema> Cinemas { get; set; }
 		public DbSet<Movie> Movies { get; set; }
 		public DbSet<Projection> Projections { get; set; }
+		public DbSet<ProjectionReservation> ProjectionReservations { get; set; }
+		public DbSet<ReservationSeat> ReservationSeats { get; set; }
 		public DbSet<Seat> Seats { get; set; }
 
 	}
