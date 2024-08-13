@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
@@ -18,7 +19,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 		{
 			_cinemaRepo = cinemaRepo;
 		}
-
+		[Authorize(Roles = "user")]
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
