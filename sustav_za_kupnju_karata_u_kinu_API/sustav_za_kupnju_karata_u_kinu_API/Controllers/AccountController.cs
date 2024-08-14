@@ -37,12 +37,16 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 
 			if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
 
+			var role = await _userManager.GetRolesAsync(user);
+
+			if (role == null) return Unauthorized("Something went wrong during login!");
+
 			return Ok(
 				new NewUserDto
 				{
 					UserName = user.UserName,
 					Email = user.Email,
-					Token = _tokenService.CreateToken(user)
+					Token = _tokenService.CreateToken(user, role[0])
 				}
 			);
 		}
@@ -76,7 +80,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 							{
 								UserName = appUser.UserName,
 								Email = appUser.Email,
-								Token = _tokenService.CreateToken(appUser)
+								Token = _tokenService.CreateToken(appUser, "User")
 							}
 							);
 					}

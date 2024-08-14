@@ -19,7 +19,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 		{
 			_cinemaRepo = cinemaRepo;
 		}
-		[Authorize(Roles = "user")]
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
@@ -27,7 +26,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			var cinemasDto = cinemas.Select(s => s.ToCinemaDto());
 			return Ok(cinemasDto);
 		}
-
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById([FromRoute] int id)
 		{

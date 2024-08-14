@@ -4,6 +4,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Interfaces
 {
 	public interface ITokenService
 	{
-		string CreateToken(AppUser appUser);
+		string CreateToken(AppUser appUser, string role);
 	}
 }

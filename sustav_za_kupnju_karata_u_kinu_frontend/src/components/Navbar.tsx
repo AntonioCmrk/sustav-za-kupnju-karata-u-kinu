@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Close, LogIn, LogOut, Menu } from "react-ionicons";
 import toast from "react-hot-toast";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const isLoggedIn = "true";
+  const isLoggedIn = false;
   return (
     <div className="bg-primary w-[99%] h-16  rounded-full my-2">
       <h1
@@ -34,17 +34,20 @@ export const Navbar = () => {
         <button
           name="login"
           className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
-            isLoggedIn === "true" ? "hidden" : ""
+            isLoggedIn ? "hidden" : ""
           }`}
-          onClick={() => {}}
+          onClick={() => {
+            navigate("/auth");
+          }}
         >
           <span>Log in</span>
           <LogIn color="#c7fdfd" title={"Log in"} />
         </button>
+
         <button
           name="logout"
           className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
-            isLoggedIn === "true" ? "" : "hidden"
+            isLoggedIn ? "" : "hidden"
           }`}
           onClick={() => {
             toast("You have loged out successfully.", {

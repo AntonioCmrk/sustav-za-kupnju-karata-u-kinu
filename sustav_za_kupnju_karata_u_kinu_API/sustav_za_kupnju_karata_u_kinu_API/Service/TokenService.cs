@@ -17,12 +17,13 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Service
 			_key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
 		}
 
-		public string CreateToken(AppUser user)
+		public string CreateToken(AppUser user, string role)
 		{
 			var claims = new List<Claim>
 			{
 				new Claim(JwtRegisteredClaimNames.Email, user.Email),
-				new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+				new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+				new Claim(ClaimTypes.Role, role),
 			};
 
 			var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
