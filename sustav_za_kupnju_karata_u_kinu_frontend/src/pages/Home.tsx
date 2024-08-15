@@ -8,14 +8,15 @@ export const Home = () => {
   );
   const allCinemas = data;
   return (
-    // <div
-    //   className={`w-screen h-96 bg-no-repeat bg-cover bg-center bg-[linear-gradient(transparent,#59B8C8),url('../src/assets/homeBackground.jpg')]`}
-    // ></div>
     <div className="flex m-4">
       {data === null
         ? null
         : allCinemas?.map((cinema: any) => (
-            <Link to={"/cinema-page"} className="m-10">
+            <Link
+              to={`/cinema-page/${cinema.id}`}
+              className="m-10"
+              key={cinema.id}
+            >
               <CinemaCard cinema={cinema} />
             </Link>
           ))}

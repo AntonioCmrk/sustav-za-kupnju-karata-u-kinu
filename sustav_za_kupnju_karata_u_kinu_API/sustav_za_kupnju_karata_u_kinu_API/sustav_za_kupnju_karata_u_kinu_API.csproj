@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\Movie\" />
-    <Folder Include="Dtos\Projection\" />
   </ItemGroup>
 
 </Project>

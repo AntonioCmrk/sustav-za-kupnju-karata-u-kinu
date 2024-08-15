@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
+using sustav_za_kupnju_karata_u_kinu_API.Repository;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
@@ -33,27 +34,34 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			return Ok(projection);
 		}
 
-		//[HttpPost]
-		//public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto projectionDto)
-		//{
-		//	var projectionModel = projectionDto.ToCinemaFromCreateDTO();
-		//	await _projectionRepo.CreateAsync(projectionModel);
-		//	return CreatedAtAction(nameof(GetById), new { id = projectionModel.Id }, projectionModel.ToCinemaDto());
-		//}
+        [HttpGet("{cinemaId}/projections")]
+        public async Task<IActionResult> GetProjections(int cinemaId)
+        {
+            var projections = await _projectionRepo.GetProjectionsByCinemaId(cinemaId);
+            return Ok(projections);
+        }
 
-		//[HttpPut]
-		//[Route("{id}")]
-		//public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCinemaRequestDto updateDto)
-		//{
-		//	var projectionModel = await _projectionRepo.UpdateAsync(id, updateDto);
-		//	if (projectionModel == null)
-		//	{
-		//		return NotFound();
-		//	}
-		//	return Ok(projectionModel.ToCinemaDto());
-		//}
+        //[HttpPost]
+        //public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto projectionDto)
+        //{
+        //	var projectionModel = projectionDto.ToCinemaFromCreateDTO();
+        //	await _projectionRepo.CreateAsync(projectionModel);
+        //	return CreatedAtAction(nameof(GetById), new { id = projectionModel.Id }, projectionModel.ToCinemaDto());
+        //}
 
-		[HttpDelete]
+        //[HttpPut]
+        //[Route("{id}")]
+        //public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCinemaRequestDto updateDto)
+        //{
+        //	var projectionModel = await _projectionRepo.UpdateAsync(id, updateDto);
+        //	if (projectionModel == null)
+        //	{
+        //		return NotFound();
+        //	}
+        //	return Ok(projectionModel.ToCinemaDto());
+        //}
+
+        [HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{

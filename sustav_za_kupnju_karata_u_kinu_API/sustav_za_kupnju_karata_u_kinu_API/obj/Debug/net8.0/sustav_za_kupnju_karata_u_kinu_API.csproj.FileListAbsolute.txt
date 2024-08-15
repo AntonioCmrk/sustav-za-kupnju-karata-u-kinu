@@ -295,4 +295,3 @@ C:\Users\cmrka\Documents\temp\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za
 C:\Users\cmrka\Documents\temp\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\cmrka\Documents\temp\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\cmrka\Documents\temp\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-C:\Users\cmrka\Documents\temp\diplomski\sustav-za-kupnju-karata-u-kinu\sustav_za_kupnju_karata_u_kinu_API\sustav_za_kupnju_karata_u_kinu_API\bin\Debug\net8.0\System.Text.Json.dll

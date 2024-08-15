@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
+using sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Models;
 
@@ -47,7 +48,22 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
 			return await _context.Projections.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<Projection?> UpdateAsync(int id, Projection projectionDto)
+        public async Task<List<ProjectionWithMovieDto>> GetProjectionsByCinemaId(int cinemaId)
+        {
+            return await _context.Projections
+                                 .Where(p => p.CinemaId == cinemaId)
+                                 .Select(p => new ProjectionWithMovieDto
+                                 {
+                                     Id = p.Id,
+                                     DateTime = p.DateTime,
+                                     Price = p.Price,
+                                     MovieTitle = p.Movie.Title,
+                                     MovieCoverImage = p.Movie.CoverImage
+                                 })
+                                 .ToListAsync();
+        }
+
+        public async Task<Projection?> UpdateAsync(int id, Projection projectionDto)
 		{
 			var existingProjection = await _context.Projections.FirstOrDefaultAsync(x => x.Id == id);
 			if (existingProjection == null)
@@ -61,5 +77,5 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
 
 			return existingProjection;
 		}
-	}
+    }
 }
