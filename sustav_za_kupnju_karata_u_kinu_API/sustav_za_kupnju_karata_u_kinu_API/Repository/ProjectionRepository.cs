@@ -77,5 +77,12 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
 
 			return existingProjection;
 		}
+
+        public async Task<Projection?> GetDetailsByIdAsync(int id)
+        {
+            return await _context.Projections
+                .Include(p => p.Movie) 
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

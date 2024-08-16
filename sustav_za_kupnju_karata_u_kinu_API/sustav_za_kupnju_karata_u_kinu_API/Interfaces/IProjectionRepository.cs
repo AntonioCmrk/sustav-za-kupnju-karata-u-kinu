@@ -14,6 +14,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Interfaces
 		Task<Projection?> UpdateAsync(int id, Projection proojectionDto);
 		Task<Projection?> DeleteAsync(int id);
         Task<List<ProjectionWithMovieDto>> GetProjectionsByCinemaId(int cinemaId);
+		Task<Projection?> GetDetailsByIdAsync(int id);
     }
 }
 

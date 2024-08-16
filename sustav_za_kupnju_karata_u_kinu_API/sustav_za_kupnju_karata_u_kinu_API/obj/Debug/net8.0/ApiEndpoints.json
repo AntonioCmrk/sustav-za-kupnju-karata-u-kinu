@@ -209,5 +209,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ProjectionController",
+    "Method": "GetProjectionDetails",
+    "RelativePath": "api/Projection/{id}/details",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

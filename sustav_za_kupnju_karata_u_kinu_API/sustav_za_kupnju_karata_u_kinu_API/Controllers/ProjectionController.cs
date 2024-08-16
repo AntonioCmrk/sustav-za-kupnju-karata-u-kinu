@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
+using sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Repository;
 
@@ -39,6 +40,34 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
         {
             var projections = await _projectionRepo.GetProjectionsByCinemaId(cinemaId);
             return Ok(projections);
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<IActionResult> GetProjectionDetails(int id)
+        {
+            var projection = await _projectionRepo.GetDetailsByIdAsync(id);
+
+            if (projection == null || projection.Movie == null)
+            {
+                return NotFound();
+            }
+
+            var projectionDetailsDto = new ProjectionDetailsDto
+            {
+                ProjectionId = projection.Id,
+                DateTime = projection.DateTime,
+                Price = projection.Price,
+                MovieTitle = projection.Movie.Title,
+                Description = projection.Movie.Description,
+                LengthInMinutes = projection.Movie.LengthInMinutes,
+                OriginalTitle = projection.Movie.OriginalTitle,
+                Genre = projection.Movie.Genre,
+                Year = projection.Movie.Year,
+                Country = projection.Movie.Country,
+                BackgroundImage = projection.Movie.BackgroundImage
+            };
+
+            return Ok(projectionDetailsDto);
         }
 
         //[HttpPost]

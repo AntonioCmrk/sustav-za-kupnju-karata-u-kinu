@@ -1,8 +1,7 @@
 export const CinemaCard = ({ cinema }: any) => {
-  console.log("cinema", cinema);
   return (
     <div
-      className="bg-primary-light rounded-2xl p-4 flex justify-center align-middle hover:cursor-pointer transform hover:scale-125 transition duration-300"
+      className="bg-primary rounded-2xl p-4 flex justify-center align-middle hover:cursor-pointer transform hover:scale-125 transition duration-300 text-quaternary-light"
       onClick={() => {}}
     >
       <div className="m-2">
