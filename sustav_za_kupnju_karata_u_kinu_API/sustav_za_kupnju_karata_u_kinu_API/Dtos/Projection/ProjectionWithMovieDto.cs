@@ -7,5 +7,6 @@
         public decimal Price { get; set; }
         public string MovieTitle { get; set; } = string.Empty;
         public string MovieCoverImage { get; set; } = string.Empty;
+        public int? AuditoriumId { get; set; }
     }
 }

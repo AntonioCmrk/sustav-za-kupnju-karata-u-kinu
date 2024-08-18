@@ -22,6 +22,7 @@ export type Projection = {
   price: number;
   movieTitle: string;
   movieCoverImage: string;
+  auditoriumId: string;
 };
 
 export type ProjectionDetails = {
@@ -36,4 +37,10 @@ export type ProjectionDetails = {
   year: number;
   country: string;
   backgroundImage: string;
+};
+
+export type DecodedToken = {
+  email: string;
+  given_name: string;
+  role: string;
 };

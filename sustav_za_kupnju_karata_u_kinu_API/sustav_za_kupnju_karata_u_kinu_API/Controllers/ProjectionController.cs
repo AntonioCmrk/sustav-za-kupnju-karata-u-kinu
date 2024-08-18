@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
@@ -70,26 +71,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
             return Ok(projectionDetailsDto);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto projectionDto)
-        //{
-        //	var projectionModel = projectionDto.ToCinemaFromCreateDTO();
-        //	await _projectionRepo.CreateAsync(projectionModel);
-        //	return CreatedAtAction(nameof(GetById), new { id = projectionModel.Id }, projectionModel.ToCinemaDto());
-        //}
-
-        //[HttpPut]
-        //[Route("{id}")]
-        //public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCinemaRequestDto updateDto)
-        //{
-        //	var projectionModel = await _projectionRepo.UpdateAsync(id, updateDto);
-        //	if (projectionModel == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	return Ok(projectionModel.ToCinemaDto());
-        //}
-
         [HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
@@ -102,5 +83,31 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			}
 			return NoContent();
 		}
-	}
+
+        [HttpGet("reservations/{projectionId}")]
+        public async Task<ActionResult<IEnumerable<SeatAvailabilityDto>>> GetAvailableSeats(int projectionId)
+        {
+            var projection = await _projectionRepo.GetByIdAsync(projectionId);
+            if (projection == null)
+            {
+                return NotFound("Projection not found.");
+            }
+
+            var seats = await _projectionRepo.GetSeatsByAuditoriumIdAsync(projection.AuditoriumId ?? 0);
+            var reservedSeatIds = await _projectionRepo.GetReservedSeatIdsForProjectionAsync(projectionId);
+
+            var availableSeats = seats
+                .Where(s => !reservedSeatIds.Contains(s.Id))
+                .Select(s => new SeatAvailabilityDto
+                {
+                    SeatId = s.Id,
+                    Row = s.Row,
+                    Column = s.Column,
+                    IsAvailable = true
+                })
+                .ToList();
+
+            return Ok(availableSeats);
+        }
+    }
 }

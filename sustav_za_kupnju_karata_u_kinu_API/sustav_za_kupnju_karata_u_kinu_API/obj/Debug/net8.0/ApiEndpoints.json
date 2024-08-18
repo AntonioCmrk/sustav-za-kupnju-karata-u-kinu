@@ -32,6 +32,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.AuditoriumController",
+    "Method": "GetAuditoriumDetails",
+    "RelativePath": "api/Auditorium/noSeatsColumns/{auditoriumId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "auditoriumId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.CinemaController",
     "Method": "GetAll",
     "RelativePath": "api/Cinema",
@@ -221,6 +237,48 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ProjectionController",
+    "Method": "GetAvailableSeats",
+    "RelativePath": "api/Projection/reservations/{projectionId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection.SeatAvailabilityDto, sustav_za_kupnju_karata_u_kinu_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
+    "Method": "GetImage",
+    "RelativePath": "Image/{filename}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filename",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],

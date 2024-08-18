@@ -51,6 +51,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
         public async Task<List<ProjectionWithMovieDto>> GetProjectionsByCinemaId(int cinemaId)
         {
             return await _context.Projections
+                                 .Include(p => p.Movie)  
                                  .Where(p => p.CinemaId == cinemaId)
                                  .Select(p => new ProjectionWithMovieDto
                                  {
@@ -58,7 +59,8 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
                                      DateTime = p.DateTime,
                                      Price = p.Price,
                                      MovieTitle = p.Movie.Title,
-                                     MovieCoverImage = p.Movie.CoverImage
+                                     MovieCoverImage = p.Movie.CoverImage,
+                                     AuditoriumId = p.AuditoriumId
                                  })
                                  .ToListAsync();
         }
@@ -84,5 +86,21 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
                 .Include(p => p.Movie) 
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        public async Task<List<Seat>> GetSeatsByAuditoriumIdAsync(int auditoriumId)
+        {
+            return await _context.Seats
+                                 .Where(s => s.AuditoriumId == auditoriumId)
+                                 .ToListAsync();
+        }
+
+        public async Task<List<int>> GetReservedSeatIdsForProjectionAsync(int projectionId)
+        {
+            return await _context.ReservationSeats
+                                 .Where(rs => rs.ProjectionReservation.ProjectionId == projectionId)
+                                 .Select(rs => rs.SeatId)
+                                 .ToListAsync();
+        }
+
     }
 }

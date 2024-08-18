@@ -16,7 +16,6 @@ export const Home = () => {
   if (error && error instanceof Error) {
     return <p>Error loading projections: {error.message}</p>;
   }
-
   const dispatch = useDispatch();
 
   const handleCinemaSelect = (cinema: Cinema) => {

@@ -1,15 +1,14 @@
 import { PrimaryButton } from "../components/PrimaryButton";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { IMG_URL } from "../constants";
-import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
-import { ProjectionDetails } from "../types";
+import { useSelector, useDispatch } from "react-redux";
 import { useQuery } from "react-query";
 import { getProjectionDetailsByProjectionId } from "../api/getProjectionDetails";
+import { setProjectionId } from "../state/projection/projectionSlice";
 
 export const MovieDetails = () => {
-  const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const selectedProjection = useSelector(
     (state: RootState) => state.projection.selectedProjection
   );
@@ -57,11 +56,16 @@ export const MovieDetails = () => {
   const formattedTime = timeFormatter.format(
     new Date(projectionDetails.dateTime)
   );
+
+  const handleSetProjectionId = (id: number) => {
+    dispatch(setProjectionId(id));
+  };
+
   return (
     <div className="bg-primary rounded-lg overflow-hidden shadow-lg max-w-4xl mx-auto my-16 p-4">
       <div className="relative">
         <img
-          src={`${IMG_URL}/${projectionDetails.backgroundImage}`}
+          src={IMG_URL + projectionDetails.backgroundImage}
           alt={projectionDetails.movieTitle}
           className="w-full h-full object-cover rounded-t-lg"
         />
@@ -71,7 +75,9 @@ export const MovieDetails = () => {
         <h1 className="text-3xl font-bold mb-4">
           {projectionDetails.movieTitle}
         </h1>
-        <p className="text-gray-700 mb-6">{projectionDetails.description}</p>
+        <p className="text-primary-dark mb-6">
+          {projectionDetails.description}
+        </p>
         <div className="mb-6 space-y-2">
           <div className="text-primary-dark">
             <strong>Duration:</strong> {projectionDetails.lengthInMinutes}{" "}
@@ -103,7 +109,12 @@ export const MovieDetails = () => {
         </div>
         <div className="m-auto  w-max">
           <NavLink to="/select-seats">
-            <PrimaryButton text="Buy Ticket" onClick={() => {}} />
+            <PrimaryButton
+              text="Buy Ticket"
+              onClick={() => {
+                handleSetProjectionId(projectionDetails.projectionId);
+              }}
+            />
           </NavLink>
         </div>
       </div>
