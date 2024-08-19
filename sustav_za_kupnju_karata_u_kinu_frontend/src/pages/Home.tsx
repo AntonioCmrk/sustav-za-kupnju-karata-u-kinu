@@ -23,7 +23,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="flex m-4">
+    <div className="flex flex-wrap m-auto w-full">
       {allCinemas === null
         ? null
         : allCinemas?.map((cinema: any) => (

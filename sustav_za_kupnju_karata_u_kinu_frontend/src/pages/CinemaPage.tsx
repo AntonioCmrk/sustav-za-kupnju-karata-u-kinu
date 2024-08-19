@@ -7,14 +7,25 @@ import { Cinema, Projection } from "../types";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { selectProjection } from "../state/projection/projectionSlice";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const CinemaPage = () => {
+  const [selectedCinema, setSelectedCinema] = useState(
+    useSelector<RootState, Cinema | null>(
+      (state) => state.cinema.selectedCinema
+    )
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const selectedCinema = useSelector<RootState, Cinema | null>(
-    (state) => state.cinema.selectedCinema
-  );
+  useEffect(() => {
+    if (!selectedCinema) {
+      console.log("aaaaaaaaaaaaaaaaaaa");
+      toast.error("You need to choose cinema first!");
+      navigate("/");
+    }
+  }, []);
   if (!selectedCinema) {
     navigate("/");
     return null;

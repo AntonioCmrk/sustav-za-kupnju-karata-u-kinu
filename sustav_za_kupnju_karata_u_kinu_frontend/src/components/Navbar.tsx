@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Close, LogIn, LogOut, Menu } from "react-ionicons";
 import toast from "react-hot-toast";
 
@@ -27,7 +27,16 @@ export const Navbar = () => {
             navigate("/");
           }}
         >
-          On the program
+          Choose cinema
+        </li>
+        <li
+          className="cursor-pointer rounded-lg px-3 py-1"
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/cinema-page");
+          }}
+        >
+          Choose movie
         </li>
       </ul>
       <div className="absolute p-4 right-4 top-3 flex gap-4 text-terary-light">

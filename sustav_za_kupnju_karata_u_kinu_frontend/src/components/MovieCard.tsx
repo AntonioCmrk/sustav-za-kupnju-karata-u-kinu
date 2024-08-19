@@ -3,7 +3,7 @@ export const MovieCard = ({ projection }: any) => {
   const { movieTitle, movieCoverImage } = projection;
 
   return (
-    <div className="rounded-2xl bg-terary-light cursor-pointer transform hover:scale-105 transition duration-300 shadow-lg max-w-xs h-min m-4">
+    <div className="rounded-2xl bg-terary-light cursor-pointer transform hover:scale-110 transition duration-300 shadow-lg max-w-xs h-min m-4">
       <img
         src={IMG_URL + movieCoverImage}
         alt={movieTitle}

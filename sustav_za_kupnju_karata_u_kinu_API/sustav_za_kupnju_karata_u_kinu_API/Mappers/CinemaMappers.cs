@@ -14,7 +14,9 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Mappers
 				Name = cinemaModel.Name,
 				NumberOfAuditoriums = cinemaModel.NumberOfAuditoriums,
 				NumberOfSeats = cinemaModel.NumberOfSeats,
+				Image = cinemaModel.Image,
 				AddressDto = cinemaModel.Address?.ToAddressDto(),
+
 			};
 		}
 		public static Cinema ToCinemaFromCreateDTO(this CreateCinemaRequestDto cinemaDto)
@@ -24,6 +26,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Mappers
 				Name = cinemaDto.Name,
 				NumberOfAuditoriums = cinemaDto.NumberOfAuditoriums,
 				NumberOfSeats = cinemaDto.NumberOfSeats,
+				Image = cinemaDto.Image,
 				Address = cinemaDto.AddressDto?.ToAddressFromCreateDTO(),
 
 			};

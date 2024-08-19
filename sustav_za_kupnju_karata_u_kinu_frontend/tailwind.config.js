@@ -34,6 +34,7 @@ export default {
         light: "#fabb9f",
         hover: "#f78b5d",
       },
+      error: "#ff0000",
     },
   },
   plugins: [],

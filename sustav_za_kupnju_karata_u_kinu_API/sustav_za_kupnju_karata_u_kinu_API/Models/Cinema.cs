@@ -7,6 +7,7 @@
 		public int NumberOfAuditoriums { get; set; }
 		public int NumberOfSeats { get; set; }
 		public Address? Address { get; set; }
+		public string Image { get; set; } = string.Empty;
 		public List<Auditorium> Auditoriums { get; set; } = new List<Auditorium>();
 		public List<Projection> Projections { get; set; } = new List<Projection>();
 	}

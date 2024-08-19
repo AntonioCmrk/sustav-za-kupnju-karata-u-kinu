@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection;
@@ -35,7 +36,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			}
 			return Ok(projection);
 		}
-
         [HttpGet("{cinemaId}/projections")]
         public async Task<IActionResult> GetProjections(int cinemaId)
         {
