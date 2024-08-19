@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useQuery, useMutation } from "react-query";
 import { RootState } from "../state/store";
-import { useQuery } from "react-query";
 import { getNoSeatRowColumn } from "../api/getNoSeatRowColumn";
 import { getSeatReservations } from "../api/getSeatReservations";
+import { reserveSeats } from "../api/reserveSeats";
 
 export const SelectSeats = () => {
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
@@ -12,7 +13,6 @@ export const SelectSeats = () => {
     (state: RootState) => state.projection.selectedProjection
   );
 
-  // Fetch auditorium details
   const {
     data: auditoriumDetailsResponse,
     isLoading: isLoadingSeats,
@@ -26,7 +26,6 @@ export const SelectSeats = () => {
     }
   );
 
-  // Fetch seat reservations
   const {
     data: reservationsResponse,
     isLoading: isLoadingReservations,
@@ -40,7 +39,38 @@ export const SelectSeats = () => {
     }
   );
 
-  if (isLoadingSeats || isLoadingReservations) return <p>Loading...</p>;
+  const { mutate: reserve, isLoading: isReserving } = useMutation(
+    reserveSeats,
+    {
+      onSuccess: (data) => {
+        alert("Reservation successful!");
+        setSelectedSeats([]);
+      },
+      onError: (error: any) => {
+        alert(`Reservation failed: ${error.message}`);
+      },
+    }
+  );
+
+  const handleSeatClick = (seatId: number) => {
+    setSelectedSeats((prevSelectedSeats) =>
+      prevSelectedSeats.includes(seatId)
+        ? prevSelectedSeats.filter((id) => id !== seatId)
+        : [...prevSelectedSeats, seatId]
+    );
+  };
+
+  const handleReserve = () => {
+    if (selectedSeats.length === 0) {
+      alert("Please select at least one seat.");
+      return;
+    }
+
+    reserve({ projectionId: projection.id, seatIds: selectedSeats });
+  };
+
+  if (isLoadingSeats || isLoadingReservations || isReserving)
+    return <p>Loading...</p>;
   if (isErrorSeats || isErrorReservations)
     return (
       <p>
@@ -54,14 +84,6 @@ export const SelectSeats = () => {
 
   const auditoriumDetails = auditoriumDetailsResponse.data;
   const reservations = reservationsResponse.data;
-
-  const handleSeatClick = (seatId: number) => {
-    setSelectedSeats((prevSelectedSeats) =>
-      prevSelectedSeats.includes(seatId)
-        ? prevSelectedSeats.filter((id) => id !== seatId)
-        : [...prevSelectedSeats, seatId]
-    );
-  };
 
   const renderSeats = () => {
     const seats = [];
@@ -104,6 +126,9 @@ export const SelectSeats = () => {
       >
         {renderSeats()}
       </div>
+      <button onClick={handleReserve} disabled={isReserving}>
+        Reserve Selected Seats
+      </button>
     </div>
   );
 };

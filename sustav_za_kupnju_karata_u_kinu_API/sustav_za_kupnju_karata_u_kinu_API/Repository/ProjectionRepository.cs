@@ -101,6 +101,18 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
                                  .Select(rs => rs.SeatId)
                                  .ToListAsync();
         }
+        public async Task<IEnumerable<ReservationSeat>> GetReservedSeatsForProjectionAsync(int projectionId, List<int> seatIds)
+        {
+            return await _context.ReservationSeats
+                .Where(rs => seatIds.Contains(rs.SeatId) && rs.ProjectionReservation.ProjectionId == projectionId)
+                .ToListAsync();
+        }
+
+        public async Task AddReservationAsync(ProjectionReservation reservation)
+        {
+            _context.ProjectionReservations.Add(reservation);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }
