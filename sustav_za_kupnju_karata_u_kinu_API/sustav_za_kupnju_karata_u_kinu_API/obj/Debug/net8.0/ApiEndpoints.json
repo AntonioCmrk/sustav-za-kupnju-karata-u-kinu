@@ -269,6 +269,22 @@
     ]
   },
   {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ProjectionController",
+    "Method": "ReserveSeats",
+    "RelativePath": "api/Projection/reserve",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection.ReservationRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
     "Method": "GetImage",
     "RelativePath": "Image/{filename}",

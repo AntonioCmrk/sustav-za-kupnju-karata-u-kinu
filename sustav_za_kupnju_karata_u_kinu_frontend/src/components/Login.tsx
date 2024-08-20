@@ -16,11 +16,9 @@ export const Login = () => {
     e.preventDefault();
     let isValid = true;
 
-    // Reset errors
     setUsernameError(null);
     setPasswordError(null);
 
-    // Basic validation
     if (!username.trim()) {
       setUsernameError("Username is incorrect");
       isValid = false;
