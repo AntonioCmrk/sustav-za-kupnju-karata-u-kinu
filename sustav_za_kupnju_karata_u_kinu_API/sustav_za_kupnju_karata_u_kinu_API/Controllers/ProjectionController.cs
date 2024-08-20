@@ -7,6 +7,7 @@ using sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Models;
 using sustav_za_kupnju_karata_u_kinu_API.Repository;
+using System.Security.Claims;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
@@ -15,14 +16,14 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 	public class ProjectionController : ControllerBase
 	{
 		private readonly IProjectionRepository _projectionRepo;
-        private readonly UserManager<AppUser> _userManager;
-        public ProjectionController(IProjectionRepository projectionRepo, UserManager<AppUser> userManager) // Modify the constructor
-        {
-            _projectionRepo = projectionRepo;
-            _userManager = userManager; 
-        }
+		private readonly UserManager<AppUser> _userManager;
+		public ProjectionController(IProjectionRepository projectionRepo, UserManager<AppUser> userManager) // Modify the constructor
+		{
+			_projectionRepo = projectionRepo;
+			_userManager = userManager;
+		}
 
-        [HttpGet]
+		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
 			var projections = await _projectionRepo.GetAllAsync();
@@ -39,42 +40,42 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			}
 			return Ok(projection);
 		}
-        [HttpGet("{cinemaId}/projections")]
-        public async Task<IActionResult> GetProjections(int cinemaId)
-        {
-            var projections = await _projectionRepo.GetProjectionsByCinemaId(cinemaId);
-            return Ok(projections);
-        }
+		[HttpGet("{cinemaId}/projections")]
+		public async Task<IActionResult> GetProjections(int cinemaId)
+		{
+			var projections = await _projectionRepo.GetProjectionsByCinemaId(cinemaId);
+			return Ok(projections);
+		}
 
-        [HttpGet("{id}/details")]
-        public async Task<IActionResult> GetProjectionDetails(int id)
-        {
-            var projection = await _projectionRepo.GetDetailsByIdAsync(id);
+		[HttpGet("{id}/details")]
+		public async Task<IActionResult> GetProjectionDetails(int id)
+		{
+			var projection = await _projectionRepo.GetDetailsByIdAsync(id);
 
-            if (projection == null || projection.Movie == null)
-            {
-                return NotFound();
-            }
+			if (projection == null || projection.Movie == null)
+			{
+				return NotFound();
+			}
 
-            var projectionDetailsDto = new ProjectionDetailsDto
-            {
-                ProjectionId = projection.Id,
-                DateTime = projection.DateTime,
-                Price = projection.Price,
-                MovieTitle = projection.Movie.Title,
-                Description = projection.Movie.Description,
-                LengthInMinutes = projection.Movie.LengthInMinutes,
-                OriginalTitle = projection.Movie.OriginalTitle,
-                Genre = projection.Movie.Genre,
-                Year = projection.Movie.Year,
-                Country = projection.Movie.Country,
-                BackgroundImage = projection.Movie.BackgroundImage
-            };
+			var projectionDetailsDto = new ProjectionDetailsDto
+			{
+				ProjectionId = projection.Id,
+				DateTime = projection.DateTime,
+				Price = projection.Price,
+				MovieTitle = projection.Movie.Title,
+				Description = projection.Movie.Description,
+				LengthInMinutes = projection.Movie.LengthInMinutes,
+				OriginalTitle = projection.Movie.OriginalTitle,
+				Genre = projection.Movie.Genre,
+				Year = projection.Movie.Year,
+				Country = projection.Movie.Country,
+				BackgroundImage = projection.Movie.BackgroundImage
+			};
 
-            return Ok(projectionDetailsDto);
-        }
+			return Ok(projectionDetailsDto);
+		}
 
-        [HttpDelete]
+		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
@@ -87,65 +88,69 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			return NoContent();
 		}
 
-        [HttpGet("reservations/{projectionId}")]
-        public async Task<ActionResult<IEnumerable<SeatAvailabilityDto>>> GetAvailableSeats(int projectionId)
-        {
-            var projection = await _projectionRepo.GetByIdAsync(projectionId);
-            if (projection == null)
-            {
-                return NotFound("Projection not found.");
-            }
+		[HttpGet("reservations/{projectionId}")]
+		public async Task<ActionResult<IEnumerable<SeatAvailabilityDto>>> GetAvailableSeats(int projectionId)
+		{
+			var projection = await _projectionRepo.GetByIdAsync(projectionId);
+			if (projection == null)
+			{
+				return NotFound("Projection not found.");
+			}
 
-            var seats = await _projectionRepo.GetSeatsByAuditoriumIdAsync(projection.AuditoriumId ?? 0);
-            var reservedSeatIds = await _projectionRepo.GetReservedSeatIdsForProjectionAsync(projectionId);
+			var seats = await _projectionRepo.GetSeatsByAuditoriumIdAsync(projection.AuditoriumId ?? 0);
+			var reservedSeatIds = await _projectionRepo.GetReservedSeatIdsForProjectionAsync(projectionId);
+			var allSeatsWithAvailability = seats
+				.Select(s => new SeatAvailabilityDto
+				{
+					SeatId = s.Id,
+					Row = s.Row,
+					Column = s.Column,
+					IsAvailable = !reservedSeatIds.Contains(s.Id)
+				})
+				.ToList();
 
-            var availableSeats = seats
-                .Where(s => !reservedSeatIds.Contains(s.Id))
-                .Select(s => new SeatAvailabilityDto
-                {
-                    SeatId = s.Id,
-                    Row = s.Row,
-                    Column = s.Column,
-                    IsAvailable = true
-                })
-                .ToList();
+			return Ok(allSeatsWithAvailability);
+		}
+		[HttpPost("reserve")]
+		[Authorize]
+		public async Task<IActionResult> ReserveSeats([FromBody] ReservationRequestDto request)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-            return Ok(availableSeats);
-        }
-        [HttpPost("reserve")]
-        [Authorize] // Ensure that only logged-in users can reserve seats
-        public async Task<IActionResult> ReserveSeats([FromBody] ReservationRequestDto request)
-        {
-            // Extract the given_name (username) from JWT
-            var userName = User.Claims.First(c => c.Type == "given_name").Value;
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return Unauthorized();
-            }
+			var nameid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            // Check if all seats are available
-            var reservedSeats = await _projectionRepo.GetReservedSeatsForProjectionAsync(request.ProjectionId, request.SeatIds);
+			var user = await _userManager.FindByIdAsync(nameid);
 
-            if (reservedSeats.Any())
-            {
-                return BadRequest("Some of the selected seats are already reserved.");
-            }
+			if (user == null)
+			{
+				return Unauthorized();
+			}
 
-            // Create a new reservation
-            var reservation = new ProjectionReservation
-            {
-                AppUserId = user.Id,
-                ProjectionId = request.ProjectionId,
-                ReservationSeats = request.SeatIds.Select(seatId => new ReservationSeat
-                {
-                    SeatId = seatId
-                }).ToList()
-            };
+			try
+			{
+				var reservedSeats = await _projectionRepo.GetReservedSeatsForProjectionAsync(request.ProjectionId, request.SeatIds);
+				if (reservedSeats.Any())
+				{
+					return BadRequest("Some of the selected seats are already reserved.");
+				}
 
-            await _projectionRepo.AddReservationAsync(reservation);
-
-            return Ok(new { Message = "Reservation successful", ReservationId = reservation.Id });
-        }
-    }
+				var reservation = new ProjectionReservation
+				{
+					AppUserId = user.Id,
+					GivenName = user.UserName,
+					ProjectionId = request.ProjectionId,
+					ReservationSeats = request.SeatIds.Select(seatId => new ReservationSeat { SeatId = seatId }).ToList()
+				};
+				await _projectionRepo.AddReservationAsync(reservation);
+				return Ok(new { Message = "Reservation successful", ReservationId = reservation.Id });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, "An error occurred while processing your request.");
+			}
+		}
+	}
 }

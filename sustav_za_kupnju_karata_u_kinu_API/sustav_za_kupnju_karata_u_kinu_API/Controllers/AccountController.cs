@@ -31,11 +31,11 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 
 			var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
-			if (user == null) return Unauthorized("Username not found and/or password incorrect");
+			if (user == null) return Unauthorized("Username not found");
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-			if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
+			if (!result.Succeeded) return Unauthorized("Password incorrect");
 
 			var role = await _userManager.GetRolesAsync(user);
 

@@ -19,7 +19,7 @@ export const SelectSeats = () => {
     isError: isErrorSeats,
     error: errorSeats,
   } = useQuery(
-    ["auditoriumDetails", projection?.auditoriumId],
+    ["getSeatReservations", projection?.auditoriumId],
     () => getNoSeatRowColumn(projection.auditoriumId),
     {
       enabled: !!projection?.auditoriumId,
@@ -59,7 +59,6 @@ export const SelectSeats = () => {
         : [...prevSelectedSeats, seatId]
     );
   };
-
   const handleReserve = () => {
     if (selectedSeats.length === 0) {
       alert("Please select at least one seat.");
@@ -126,7 +125,10 @@ export const SelectSeats = () => {
       >
         {renderSeats()}
       </div>
-      <button onClick={handleReserve} disabled={isReserving}>
+      <button
+        className="bg-accent p-4 rounded-3xl text-white"
+        onClick={handleReserve}
+      >
         Reserve Selected Seats
       </button>
     </div>

@@ -2,11 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Close, LogIn, LogOut, Menu } from "react-ionicons";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectAuth } from "../state/auth/authSlice";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const isLoggedIn = false;
+  const dispatch = useDispatch();
+  const { token } = useSelector(selectAuth);
+
   return (
     <div className="bg-primary w-[99%] h-16  rounded-full my-2">
       <h1
@@ -43,7 +47,7 @@ export const Navbar = () => {
         <button
           name="login"
           className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
-            isLoggedIn ? "hidden" : ""
+            token ? "hidden" : ""
           }`}
           onClick={() => {
             navigate("/auth");
@@ -56,9 +60,11 @@ export const Navbar = () => {
         <button
           name="logout"
           className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
-            isLoggedIn ? "" : "hidden"
+            token ? "" : "hidden"
           }`}
           onClick={() => {
+            dispatch(logout());
+            localStorage.removeItem("token");
             toast("You have loged out successfully.", {
               style: {
                 borderRadius: "20px",

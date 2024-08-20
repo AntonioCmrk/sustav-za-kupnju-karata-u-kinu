@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
 
@@ -11,13 +12,15 @@ using sustav_za_kupnju_karata_u_kinu_API.Data;
 namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240820064204_cinemaImage")]
+    partial class cinemaImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -51,13 +54,13 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dc759c5b-2e85-4e25-9953-0422b2dd20bf",
+                            Id = "8f4d0f08-a577-4e97-a2bd-be97003b6a27",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4705a1c5-7e59-4810-8743-8e93b96be824",
+                            Id = "1b39d5b5-488d-4e7f-a5e5-e382c5103cd5",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -423,13 +426,11 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("GivenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("AppUserId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ProjectionId")
                         .HasColumnType("int");
@@ -439,7 +440,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.HasIndex("ProjectionId");
 
@@ -587,9 +588,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                 {
                     b.HasOne("sustav_za_kupnju_karata_u_kinu_API.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId1");
 
                     b.HasOne("sustav_za_kupnju_karata_u_kinu_API.Models.Projection", "Projection")
                         .WithMany()

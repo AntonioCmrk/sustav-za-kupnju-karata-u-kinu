@@ -24,6 +24,7 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Service
 				new Claim(JwtRegisteredClaimNames.Email, user.Email),
 				new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
 				new Claim(ClaimTypes.Role, role),
+				new Claim(ClaimTypes.NameIdentifier, user.Id),
 			};
 
 			var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

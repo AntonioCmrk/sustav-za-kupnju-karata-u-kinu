@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { selectCinema } from "../state/cinema/cinemaSlice";
 import { Cinema } from "../types";
 export const Home = () => {
+  const dispatch = useDispatch();
   const {
     data: allCinemas,
     isLoading,
@@ -16,7 +17,6 @@ export const Home = () => {
   if (error && error instanceof Error) {
     return <p>Error loading projections: {error.message}</p>;
   }
-  const dispatch = useDispatch();
 
   const handleCinemaSelect = (cinema: Cinema) => {
     dispatch(selectCinema(cinema));

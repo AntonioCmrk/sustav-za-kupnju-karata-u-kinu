@@ -8,3 +8,6 @@ export const axios = Axios.create({
     // withCredentials: true,
   },
 });
+export const config = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+};

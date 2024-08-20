@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sustav_za_kupnju_karata_u_kinu_API.Data;
 
@@ -11,13 +12,15 @@ using sustav_za_kupnju_karata_u_kinu_API.Data;
 namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240820070123_ProjectReservationAppUserId")]
+    partial class ProjectReservationAppUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -51,13 +54,13 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dc759c5b-2e85-4e25-9953-0422b2dd20bf",
+                            Id = "f79c7e73-5732-41b6-b261-8bc0666a4ed3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4705a1c5-7e59-4810-8743-8e93b96be824",
+                            Id = "a3b47942-57c3-4fe1-bf9f-ebd164b0e7e8",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -426,10 +429,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Migrations
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GivenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProjectionId")
                         .HasColumnType("int");
