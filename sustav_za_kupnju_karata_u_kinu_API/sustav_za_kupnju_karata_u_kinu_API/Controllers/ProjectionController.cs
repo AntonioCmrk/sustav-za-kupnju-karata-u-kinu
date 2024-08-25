@@ -17,13 +17,13 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 	{
 		private readonly IProjectionRepository _projectionRepo;
 		private readonly UserManager<AppUser> _userManager;
-		public ProjectionController(IProjectionRepository projectionRepo, UserManager<AppUser> userManager) // Modify the constructor
-		{
-			_projectionRepo = projectionRepo;
-			_userManager = userManager;
-		}
+        public ProjectionController(IProjectionRepository projectionRepo, UserManager<AppUser> userManager)
+        {
+            _projectionRepo = projectionRepo;
+            _userManager = userManager;
+        }
 
-		[HttpGet]
+        [HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
 			var projections = await _projectionRepo.GetAllAsync();
@@ -111,46 +111,82 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 
 			return Ok(allSeatsWithAvailability);
 		}
-		[HttpPost("reserve")]
-		[Authorize]
-		public async Task<IActionResult> ReserveSeats([FromBody] ReservationRequestDto request)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
+        [HttpPost("reserve")]
+        [Authorize]
+        public async Task<IActionResult> ReserveSeats([FromBody] ReservationRequestDto request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-			var nameid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var nameid = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
-			var user = await _userManager.FindByIdAsync(nameid);
+            var user = await _userManager.FindByIdAsync(nameid);
 
-			if (user == null)
-			{
-				return Unauthorized();
-			}
+            if (user == null)
+            {
+                return Unauthorized();
+            }
 
-			try
-			{
-				var reservedSeats = await _projectionRepo.GetReservedSeatsForProjectionAsync(request.ProjectionId, request.SeatIds);
-				if (reservedSeats.Any())
-				{
-					return BadRequest("Some of the selected seats are already reserved.");
-				}
+            try
+            {
+                var reservedSeats = await _projectionRepo.GetReservedSeatsForProjectionAsync(request.ProjectionId, request.SeatIds);
+                if (reservedSeats.Any())
+                {
+                    return BadRequest("Some of the selected seats are already reserved.");
+                }
 
-				var reservation = new ProjectionReservation
-				{
-					AppUserId = user.Id,
-					GivenName = user.UserName,
-					ProjectionId = request.ProjectionId,
-					ReservationSeats = request.SeatIds.Select(seatId => new ReservationSeat { SeatId = seatId }).ToList()
-				};
-				await _projectionRepo.AddReservationAsync(reservation);
-				return Ok(new { Message = "Reservation successful", ReservationId = reservation.Id });
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(500, "An error occurred while processing your request.");
-			}
-		}
-	}
+                var reservation = new ProjectionReservation
+                {
+                    AppUserId = user.Id,
+                    GivenName = user.UserName,
+                    ProjectionId = request.ProjectionId,
+                    ReservationSeats = request.SeatIds.Select(seatId => new ReservationSeat { SeatId = seatId }).ToList(),
+                    ReservationTime = DateTime.Now
+                };
+
+                await _projectionRepo.AddReservationAsync(reservation);
+
+                var projection = await _projectionRepo.GetProjectionWithDetailsAsync(request.ProjectionId);
+                if (projection == null)
+                {
+                    return StatusCode(500, "Projection not found.");
+                }
+
+                var cinemaName = projection.Cinema?.Name ?? "Unknown Cinema";
+                var auditoriumName = projection.Auditorium?.Name ?? "Unknown Auditorium";
+                var movieName = projection.Movie?.Title ?? "Unknown Movie";
+                var projectionDateTime = projection.DateTime;
+                var seatDetails = reservation.ReservationSeats.Select(rs => new
+                {
+                    Row = rs.Seat?.Row ?? 0,
+                    Column = rs.Seat?.Column ?? 0
+                }).ToList();
+                var reservationTime = reservation.ReservationTime;
+
+                var response = new
+                {
+                    ReservationId = reservation.Id,
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    CinemaName = cinemaName,
+                    AuditoriumName = auditoriumName,
+                    MovieName = movieName,
+                    ProjectionDateTime = projectionDateTime,
+                    Seats = seatDetails,
+                    ReservationTime = reservationTime,
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+    }
 }
+
+
+

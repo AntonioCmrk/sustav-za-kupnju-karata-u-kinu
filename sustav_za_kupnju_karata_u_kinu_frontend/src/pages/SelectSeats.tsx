@@ -1,13 +1,24 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery, useMutation } from "react-query";
 import { RootState } from "../state/store";
 import { getNoSeatRowColumn } from "../api/getNoSeatRowColumn";
 import { getSeatReservations } from "../api/getSeatReservations";
 import { reserveSeats } from "../api/reserveSeats";
+import { ethers } from "ethers";
+import reservationContractAbi from "../abi/reservationContractAbi.json";
+import { useNavigate } from "react-router-dom";
+import { setReservationDetails } from "../state/reservation/reservationSlice";
+import { ReservationData, Seat } from "../types";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { Tooltip } from "react-tooltip";
+import { CONTRACT_ADDRESS } from "../constants";
 
 export const SelectSeats = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const projection = useSelector(
     (state: RootState) => state.projection.selectedProjection
@@ -43,8 +54,27 @@ export const SelectSeats = () => {
     reserveSeats,
     {
       onSuccess: (data) => {
+        console.log(data);
         alert("Reservation successful!");
+
         setSelectedSeats([]);
+
+        handleBlockchainReservation(data);
+
+        dispatch(
+          setReservationDetails({
+            userName: data.userName,
+            movieName: data.movieName,
+            cinemaName: data.cinemaName,
+            auditoriumName: data.auditoriumName,
+            seats: data.seats,
+            projectionDateTime: Math.floor(
+              new Date(data.projectionDateTime).getTime() / 1000
+            ),
+          })
+        );
+
+        navigate("/success-purchase");
       },
       onError: (error: any) => {
         alert(`Reservation failed: ${error.message}`);
@@ -59,7 +89,58 @@ export const SelectSeats = () => {
         : [...prevSelectedSeats, seatId]
     );
   };
+
+  const handleBlockchainReservation = async (
+    reservationData: ReservationData
+  ) => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+
+      const reservationContractAddress = CONTRACT_ADDRESS;
+      const reservationContract = new ethers.Contract(
+        reservationContractAddress,
+        reservationContractAbi,
+        signer
+      );
+
+      const seats = reservationData.seats.map((seat: Seat) => ({
+        row: seat.row,
+        column: seat.column,
+      }));
+
+      const tx = await reservationContract.createReservation(
+        reservationData.reservationId,
+        reservationData.userId,
+        reservationData.userName,
+        reservationData.cinemaName,
+        reservationData.auditoriumName,
+        reservationData.movieName,
+        Math.floor(
+          new Date(reservationData.projectionDateTime).getTime() / 1000
+        ),
+        seats,
+        Math.floor(new Date().getTime() / 1000)
+      );
+
+      await tx.wait();
+      console.log("Reservation successfully saved to the blockchain!");
+    } catch (err) {
+      const errorMessage =
+        (err as Error).message || "An unknown error occurred";
+      console.error("Failed to save reservation:", errorMessage);
+      alert("Failed to save reservation to the blockchain: " + errorMessage);
+    }
+  };
+
   const handleReserve = () => {
+    if (!token) {
+      alert("You need to be logged in to reserve seats.");
+      navigate("/auth");
+      return;
+    }
+
     if (selectedSeats.length === 0) {
       alert("Please select at least one seat.");
       return;
@@ -69,64 +150,109 @@ export const SelectSeats = () => {
   };
 
   if (isLoadingSeats || isLoadingReservations || isReserving)
-    return <p>Loading...</p>;
+    return <p className="text-primary-light">Loading...</p>;
   if (isErrorSeats || isErrorReservations)
     return (
-      <p>
+      <p className="text-error">
         Error:{" "}
         {(errorSeats as Error)?.message ||
           (errorReservations as Error)?.message}
       </p>
     );
   if (!auditoriumDetailsResponse?.data || !reservationsResponse?.data)
-    return <p>No data available.</p>;
+    return <p className="text-primary-light">No data available.</p>;
 
   const auditoriumDetails = auditoriumDetailsResponse.data;
   const reservations = reservationsResponse.data;
 
   const renderSeats = () => {
     const seats = [];
-    for (let row = 1; row <= auditoriumDetails.numberOfRows; row++) {
-      for (let col = 1; col <= auditoriumDetails.numberOfColumns; col++) {
+
+    seats.push(
+      <div key="column-labels" className="grid grid-cols-1">
+        <div className="h-8" />
+        {Array.from(
+          { length: auditoriumDetails.numberOfRows },
+          (_, rowIndex) => (
+            <div
+              key={`row-label-${rowIndex + 1}`}
+              className="flex items-center justify-center font-bold"
+            >
+              Row {rowIndex + 1}
+            </div>
+          )
+        )}
+      </div>
+    );
+
+    for (let col = 1; col <= auditoriumDetails.numberOfColumns; col++) {
+      const columnSeats = [];
+
+      columnSeats.push(
+        <div
+          key={`col-label-${col}`}
+          className="flex items-center justify-center font-bold"
+        >
+          Col {col}
+        </div>
+      );
+
+      for (let row = 1; row <= auditoriumDetails.numberOfRows; row++) {
         const seat = reservations.find(
           (res: any) => res.row === row && res.column === col
         );
 
-        if (!seat) continue;
+        const isReserved = !seat?.isAvailable;
+        const isSelected = selectedSeats.includes(seat?.seatId || 0);
 
-        const isReserved = !seat.isAvailable;
-        const isSelected = selectedSeats.includes(seat.seatId);
-
-        seats.push(
-          <label key={seat.seatId}>
-            <input
-              type="checkbox"
-              checked={isSelected}
-              disabled={isReserved}
-              onChange={() => handleSeatClick(seat.seatId)}
-            />{" "}
-            Row {row}, Col {col}
-          </label>
+        columnSeats.push(
+          <div
+            key={`seat-${row}-${col}`}
+            onClick={() => !isReserved && handleSeatClick(seat.seatId)}
+            data-tooltip-id="already-taken-seat"
+            data-tooltip-content={`${
+              isReserved ? "This seat is already taken." : ""
+            }`}
+            className={`cursor-pointer w-10 h-10 flex items-center justify-center 
+              ${
+                isReserved
+                  ? "text-accent-dark cursor-not-allowed"
+                  : isSelected
+                  ? "text-accent"
+                  : "text-quaternary-light"
+              }`}
+          >
+            <EventSeatIcon fontSize="large" />
+            <Tooltip id="already-taken-seat" />
+          </div>
         );
       }
+
+      seats.push(
+        <div key={`column-${col}`} className="grid grid-cols-1">
+          {columnSeats}
+        </div>
+      );
     }
+
     return seats;
   };
 
   return (
-    <div>
-      <h2>Select your seats:</h2>
+    <div className="p-6 bg-primary-dark text-quaternary-light rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">Select your seats:</h2>
       <div
+        className="grid"
         style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${auditoriumDetails.numberOfColumns}, 1fr)`,
-          gap: "10px",
+          gridTemplateColumns: `repeat(${
+            auditoriumDetails.numberOfColumns + 1
+          }, 1fr)`,
         }}
       >
         {renderSeats()}
       </div>
       <button
-        className="bg-accent p-4 rounded-3xl text-white"
+        className="mt-6 w-full py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg shadow-md"
         onClick={handleReserve}
       >
         Reserve Selected Seats

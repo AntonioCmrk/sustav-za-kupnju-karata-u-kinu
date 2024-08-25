@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PrimaryButton } from "./PrimaryButton";
-import { useState } from "react";
 import { login } from "../state/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -10,9 +10,10 @@ export const Login = () => {
   const [password, setPassword] = useState<string>("");
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let isValid = true;
 
@@ -29,8 +30,17 @@ export const Login = () => {
     }
 
     if (!isValid) return;
-    dispatch(login(username, password));
-    navigate(-1);
+
+    setLoading(true);
+
+    const loginSuccess = await dispatch(login(username, password));
+
+    setLoading(false);
+    if (loginSuccess) {
+      navigate(-1);
+    } else {
+      alert("Login failed. Please check your credentials and try again.");
+    }
   };
 
   return (
@@ -75,8 +85,9 @@ export const Login = () => {
 
           <PrimaryButton
             type="submit"
-            text="Sign in"
+            text={loading ? "Signing in..." : "Sign in"}
             className="w-full text-white bg-lightGreen hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            disabled={loading}
           />
         </form>
       </div>

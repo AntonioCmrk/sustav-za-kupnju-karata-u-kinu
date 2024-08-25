@@ -113,6 +113,16 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
             _context.ProjectionReservations.Add(reservation);
             await _context.SaveChangesAsync();
         }
+        public async Task<Projection?> GetProjectionWithDetailsAsync(int projectionId)
+        {
+            return await _context.Projections
+                .Include(p => p.Cinema)
+                .Include(p => p.Auditorium)
+                .Include(p => p.Movie)
+                .Include(p => p.Auditorium.Seats)
+                .FirstOrDefaultAsync(p => p.Id == projectionId);
+        }
+     
 
     }
 }

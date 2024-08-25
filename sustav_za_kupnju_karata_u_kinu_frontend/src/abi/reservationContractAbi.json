@@ -1,0 +1,332 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "reservationId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "userName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "cinemaName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "auditoriumName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "movieName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "projectionDateTime",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "reservationTime",
+				"type": "uint256"
+			}
+		],
+		"name": "ReservationCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_reservationId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_userId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_userName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_cinemaName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_auditoriumName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_movieName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_projectionDateTime",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "row",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "column",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ReservationContract.Seat[]",
+				"name": "_seats",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_reservationTime",
+				"type": "uint256"
+			}
+		],
+		"name": "createReservation",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_reservationId",
+				"type": "uint256"
+			}
+		],
+		"name": "getReservation",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "reservationId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "userId",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "userName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cinemaName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "auditoriumName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "movieName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "projectionDateTime",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "row",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "column",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct ReservationContract.Seat[]",
+						"name": "seats",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reservationTime",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ReservationContract.Reservation",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_userName",
+				"type": "string"
+			}
+		],
+		"name": "getReservationsByUsername",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "reservationId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "userId",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "userName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cinemaName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "auditoriumName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "movieName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "projectionDateTime",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "row",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "column",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct ReservationContract.Seat[]",
+						"name": "seats",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reservationTime",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ReservationContract.Reservation[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "reservations",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "reservationId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "userName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "cinemaName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "auditoriumName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "movieName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "projectionDateTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reservationTime",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

@@ -2,12 +2,14 @@ import { Action, configureStore, Store, ThunkAction } from "@reduxjs/toolkit";
 import cinemaReducer from "./cinema/cinemaSlice";
 import projectionReducer from "./projection/projectionSlice";
 import authReducer from "./auth/authSlice";
+import reservationReducer from "./reservation/reservationSlice";
 
 export const store: Store = configureStore({
   reducer: {
     cinema: cinemaReducer,
     projection: projectionReducer,
     auth: authReducer,
+    reservation: reservationReducer,
   },
 });
 

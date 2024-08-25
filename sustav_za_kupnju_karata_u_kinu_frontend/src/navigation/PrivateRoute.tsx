@@ -1,16 +1,19 @@
-import { Navigate, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../state/auth/authSlice";
 
-const PrivateRoute = ({ component: Component, ...rest }: any) => {
-  const { token } = useSelector(selectAuth);
+const PrivateRoute = ({ children }: any) => {
+  const { token, role } = useSelector(selectAuth);
 
-  return (
-    <Route
-      {...rest}
-      element={token ? <Component /> : <Navigate to="/login" />}
-    />
-  );
+  if (!token) {
+    return <Navigate to="/auth" />;
+  }
+
+  if (role !== "Admin") {
+    return <Navigate to="/" />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

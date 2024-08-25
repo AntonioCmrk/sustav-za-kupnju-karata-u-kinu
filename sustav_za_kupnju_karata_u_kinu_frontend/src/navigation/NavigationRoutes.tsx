@@ -7,10 +7,7 @@ import { SelectSeats } from "../pages/SelectSeats";
 import { Auth } from "../pages/Auth";
 import PrivateRoute from "./PrivateRoute";
 import { Dashboard } from "../pages/Dashboard";
-import { useDispatch } from "react-redux";
-import { authSuccess } from "../state/auth/authSlice";
-import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "../types";
+import { SuccessPurchase } from "../pages/SuccessPurchase";
 
 export const NavigationRoutes = () => {
   return (
@@ -20,11 +17,16 @@ export const NavigationRoutes = () => {
       <Route path="/cinema-page" element={<CinemaPage />} />
       <Route path="/movie-details" element={<MovieDetails />} />
       <Route path="/select-seats" element={<SelectSeats />} />
-      <Route path="*" element={<Error />} />
+      <Route path="/success-purchase" element={<SuccessPurchase />} />
       <Route
         path="/dashboard"
-        element={<PrivateRoute component={<Dashboard />} />}
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
       />
+      <Route path="*" element={<Error />} />
     </Routes>
   );
 };

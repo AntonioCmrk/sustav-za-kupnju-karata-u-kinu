@@ -1,11 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { register } from "../state/auth/authSlice";
 import { PrimaryButton } from "./PrimaryButton";
-import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
   const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -16,13 +17,11 @@ export const Register = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState<
     string | null
   >(null);
-  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let isValid = true;
 
-    // Reset errors
     setEmailError(null);
     setUsernameError(null);
     setPasswordError(null);
@@ -43,8 +42,15 @@ export const Register = () => {
 
     if (!isValid) return;
 
-    dispatch(register({ email, username, password }));
-    navigate(-1);
+    const registrationSuccess = await dispatch(
+      register({ email, username, password })
+    );
+
+    if (registrationSuccess) {
+      navigate(-1);
+    } else {
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (

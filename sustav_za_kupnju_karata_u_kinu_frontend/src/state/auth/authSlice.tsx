@@ -52,6 +52,25 @@ const authSlice = createSlice({
 
 export const { authStart, authSuccess, authFail, logout } = authSlice.actions;
 
+export const initializeAuth = () => (dispatch: AppDispatch) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      dispatch(
+        authSuccess({
+          user: decodedToken.given_name,
+          token,
+          role: decodedToken.role,
+        })
+      );
+    } catch (error) {
+      console.error("Failed to decode token:", error);
+      dispatch(authFail("Failed to authenticate with stored token."));
+    }
+  }
+};
+
 export const login =
   (username: string, password: string) => async (dispatch: AppDispatch) => {
     dispatch(authStart());
@@ -67,8 +86,12 @@ export const login =
         })
       );
       localStorage.setItem("token", token);
+
+      return true;
     } catch (error: any) {
+      console.error("Login failed:", error.response?.data || error.message);
       dispatch(authFail(error.response?.data?.message || "Failed to login"));
+      return false;
     }
   };
 
@@ -96,8 +119,16 @@ export const register =
         })
       );
       localStorage.setItem("token", token);
+
+      return true;
     } catch (error: any) {
+      console.error(
+        "Registration failed:",
+        error.response?.data || error.message
+      );
       dispatch(authFail(error.response?.data?.message || "Failed to register"));
+
+      return false;
     }
   };
 

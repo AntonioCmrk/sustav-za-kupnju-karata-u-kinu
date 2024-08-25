@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Close, LogIn, LogOut, Menu } from "react-ionicons";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuth } from "../state/auth/authSlice";
+import { Tooltip } from "react-tooltip";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
-  const { token } = useSelector(selectAuth);
+  const { token, user, role } = useSelector(selectAuth);
 
   return (
     <div className="bg-primary w-[99%] h-16  rounded-full my-2">
@@ -42,6 +46,17 @@ export const Navbar = () => {
         >
           Choose movie
         </li>
+        {role === "Admin" && (
+          <li
+            className="cursor-pointer rounded-lg px-3 py-1"
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/dashboard");
+            }}
+          >
+            Dashboard
+          </li>
+        )}
       </ul>
       <div className="absolute p-4 right-4 top-3 flex gap-4 text-terary-light">
         <button
@@ -54,11 +69,14 @@ export const Navbar = () => {
           }}
         >
           <span>Log in</span>
-          <LogIn color="#c7fdfd" title={"Log in"} />
+
+          <LoginIcon fontSize="medium" className="text-quaternary" />
         </button>
 
         <button
           name="logout"
+          data-tooltip-id="logout-button"
+          data-tooltip-content={`User: ${user}`}
           className={`cursor-pointer  flex align-middle justify-center text-quaternary-light ${
             token ? "" : "hidden"
           }`}
@@ -72,42 +90,17 @@ export const Navbar = () => {
             });
           }}
         >
-          <LogOut color="#c7fdfd" /> Log out
+          <LogoutIcon fontSize="medium" /> Log out
+          <Tooltip id="logout-button" />
         </button>
         <button
           name="menu"
-          className="text-3xl cursor-pointer md:xl xl:hidden max-xl:right-28"
+          className="text-3xl cursor-pointer md:xl xl:hidden max-xl:right-28 mt-[-0.6rem]"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
-          {menuOpen ? <Close color="#c7fdfd" /> : <Menu color="#c7fdfd" />}
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
-      {/* <button
-        name="username"
-        className={`hover:outline outline-violet-800 rounded-xl absolute p-2 right-4 top-3  cursor-pointer  flex align-middle justify-center ${
-          isLoggedIn === "true" ? "" : "hidden"
-        }`}
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="dropdown"
-        type="button"
-        onClick={() => {}}
-      >
-        <div className="mr-1 mt-[-0.15rem] flex flex-col relative">
-          <span>Signed in as </span>
-          <span className="text-violet-950 font-bold text-lg">username</span>
-        </div>
-        <div className="relative top-3 ml-2">
-          <ArrowDownCircleOutline color="#4C1D95" />
-        </div>
-      </button>
-      <div
-        className={`z-10  bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-slate-200 absolute right-7 top-20 ${
-          logoutMenu === true ? "" : "hidden"
-        }`}
-      ></div>
-
-      
-       */}
     </div>
   );
 };

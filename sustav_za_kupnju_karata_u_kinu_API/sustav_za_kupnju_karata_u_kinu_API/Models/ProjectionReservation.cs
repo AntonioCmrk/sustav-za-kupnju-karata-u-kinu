@@ -10,5 +10,5 @@
 		public DateTime ReservationTime { get; set; } = DateTime.Now;
 		public List<ReservationSeat> ReservationSeats { get; set; } = new List<ReservationSeat>();
 		public string GivenName { get; set; } = string.Empty;
-	}
+    }
 }

@@ -44,3 +44,31 @@ export type DecodedToken = {
   given_name: string;
   role: string;
 };
+
+export interface Seat {
+  row: number;
+  column: number;
+}
+
+export interface ReservationData {
+  reservationId: number;
+  userId: string;
+  userName: string;
+  cinemaName: string;
+  auditoriumName: string;
+  movieName: string;
+  projectionDateTime: string | Date;
+  seats: Seat[];
+}
+
+export interface Reservation {
+  reservationId: number;
+  userId: string;
+  userName: string;
+  cinemaName: string;
+  auditoriumName: string;
+  movieName: string;
+  projectionDateTime: number;
+  seats: Seat[];
+  reservationTime: number;
+}
