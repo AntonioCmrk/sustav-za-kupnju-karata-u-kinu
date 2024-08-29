@@ -88,11 +88,12 @@ export const Dashboard = () => {
       {reservations.length > 0 && (
         <div className="mt-6">
           <h3 className="text-xl font-semibold mb-2">Reservations:</h3>
-          <ul className="list-disc pl-5 space-y-2">
+          <ul className="list-disc pl-5 space-y-2 list-none">
             {reservations.map((reservation, index) => (
               <li key={index} className="bg-quaternary-dark p-4 rounded-lg">
                 <p>
-                  <strong>Reservation ID:</strong> {reservation.reservationId}
+                  <strong>Reservation ID:</strong>{" "}
+                  {reservation.reservationId.toString()}
                 </p>
                 <p>
                   <strong>Cinema:</strong> {reservation.cinemaName}

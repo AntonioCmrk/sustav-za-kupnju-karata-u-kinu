@@ -21,7 +21,6 @@ export const CinemaPage = () => {
 
   useEffect(() => {
     if (!selectedCinema) {
-      console.log("aaaaaaaaaaaaaaaaaaa");
       toast.error("You need to choose cinema first!");
       navigate("/");
     }
@@ -57,7 +56,7 @@ export const CinemaPage = () => {
       <h1 className="text-2xl font-bold text-center mb-4">
         Projections for {selectedCinema.name}
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {data?.length ? (
           data.map((projection: Projection) => (
             <NavLink
@@ -70,7 +69,7 @@ export const CinemaPage = () => {
             </NavLink>
           ))
         ) : (
-          <p className="text-center col-span-full text-secondary">
+          <p className="text-center w-full text-secondary">
             No projections available.
           </p>
         )}

@@ -54,7 +54,6 @@ export const SelectSeats = () => {
     reserveSeats,
     {
       onSuccess: (data) => {
-        console.log(data);
         alert("Reservation successful!");
 
         setSelectedSeats([]);
@@ -123,9 +122,7 @@ export const SelectSeats = () => {
         seats,
         Math.floor(new Date().getTime() / 1000)
       );
-
       await tx.wait();
-      console.log("Reservation successfully saved to the blockchain!");
     } catch (err) {
       const errorMessage =
         (err as Error).message || "An unknown error occurred";
