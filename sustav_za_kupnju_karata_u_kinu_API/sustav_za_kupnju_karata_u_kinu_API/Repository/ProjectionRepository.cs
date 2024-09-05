@@ -14,14 +14,14 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
 		{
 			_context = context;
 		}
-		public async Task<Projection> CreateAsync(Projection projectionModel)
-		{
-			await _context.Projections.AddAsync(projectionModel);
-			await _context.SaveChangesAsync();
-			return projectionModel;
-		}
+        public async Task<Projection> CreateAsync(Projection projectionModel)
+        {
+            await _context.Projections.AddAsync(projectionModel);
+            await _context.SaveChangesAsync();
+            return projectionModel;
+        }
 
-		public async Task<Projection?> DeleteAsync(int id)
+        public async Task<Projection?> DeleteAsync(int id)
 		{
 			var projectionModel = await _context.Projections.FirstOrDefaultAsync(x => x.Id == id);
 			if (projectionModel == null)
@@ -122,7 +122,5 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Repository
                 .Include(p => p.Auditorium.Seats)
                 .FirstOrDefaultAsync(p => p.Id == projectionId);
         }
-     
-
     }
 }

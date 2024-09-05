@@ -16,7 +16,7 @@ export const Navbar = () => {
   const { token, user, role } = useSelector(selectAuth);
 
   return (
-    <div className="bg-primary w-[99%] h-16  rounded-full my-2">
+    <div className="bg-primary w-[99%] h-16 z-20 rounded-full my-2">
       <h1
         className="absolute p-4 cursor-pointer text-xl font-bold text-accent z-20"
         onClick={() => navigate("/")}
@@ -46,6 +46,17 @@ export const Navbar = () => {
         >
           Choose movie
         </li>
+        {(role === "Admin" || role === "User") && (
+          <li
+            className="cursor-pointer rounded-lg px-3 py-1"
+            onClick={() => {
+              setMenuOpen(false);
+              navigate("/user-tickets");
+            }}
+          >
+            My tickets
+          </li>
+        )}
         {role === "Admin" && (
           <li
             className="cursor-pointer rounded-lg px-3 py-1"

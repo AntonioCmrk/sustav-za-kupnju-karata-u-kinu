@@ -72,3 +72,64 @@ export interface Reservation {
   seats: Seat[];
   reservationTime: number;
 }
+
+export interface Auditorium {
+  id: number;
+  name: string;
+  numberOfRows: number;
+  numberOfColumns: number;
+}
+
+export interface CreateCinemaRequestDto {
+  name: string;
+  numberOfAuditoriums: number;
+  numberOfSeats?: number;
+  image: string;
+  addressDto: {
+    postalCode: number;
+    city: string;
+    country: string;
+    streetName: string;
+    houseNumber: number;
+  };
+  auditoriums: {
+    name: string;
+    numberOfRows: number;
+    numberOfColumns: number;
+  }[];
+}
+
+export interface CreateMovieRequestDto {
+  title: string;
+  shortDescription: string;
+  description: string;
+  lengthInMinutes: number;
+  originalTitle: string;
+  genre: string;
+  year: number;
+  country: string;
+  coverImage: string;
+  backgroundImage: string;
+}
+
+export interface CreateProjectionRequestDto {
+  cinemaId: number;
+  movieId: number;
+  auditoriumId: number;
+  dateTime: string;
+  price: number;
+}
+
+export interface Movie {
+  id: number;
+  title: string;
+  shortDescription: string;
+  description: string;
+  lengthInMinutes: number;
+  originalTitle: string;
+  genre: string;
+  year: number;
+  country: string;
+  coverImage: string;
+  backgroundImage: string;
+}

@@ -30,7 +30,36 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			return Ok(projections);
 		}
 
-		[HttpGet("{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateProjectionRequestDto createProjectionDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var projection = new Projection
+            {
+                CinemaId = createProjectionDto.CinemaId,
+                MovieId = createProjectionDto.MovieId,
+                AuditoriumId = createProjectionDto.AuditoriumId,
+                DateTime = createProjectionDto.DateTime,
+                Price = createProjectionDto.Price
+            };
+
+            try
+            {
+                var createdProjection = await _projectionRepo.CreateAsync(projection);
+                return CreatedAtAction(nameof(GetById), new { id = createdProjection.Id }, createdProjection);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet("{id}")]
 		public async Task<IActionResult> GetById([FromRoute] int id)
 		{
 			var projection = await _projectionRepo.GetByIdAsync(id);

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using sustav_za_kupnju_karata_u_kinu_API.Dtos;
 using sustav_za_kupnju_karata_u_kinu_API.Dtos.Cinema;
 using sustav_za_kupnju_karata_u_kinu_API.Interfaces;
 using sustav_za_kupnju_karata_u_kinu_API.Mappers;
+using sustav_za_kupnju_karata_u_kinu_API.Models;
 
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
@@ -34,26 +36,6 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			return Ok(movie);
 		}
 
-		//[HttpPost]
-		//public async Task<IActionResult> Create([FromBody] CreateCinemaRequestDto movieDto)
-		//{
-		//	var movieModel = movieDto.ToCinemaFromCreateDTO();
-		//	await _movieRepo.CreateAsync(movieModel);
-		//	return CreatedAtAction(nameof(GetById), new { id = movieModel.Id }, movieModel.ToCinemaDto());
-		//}
-
-		//[HttpPut]
-		//[Route("{id}")]
-		//public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCinemaRequestDto updateDto)
-		//{
-		//	var movieModel = await _movieRepo.UpdateAsync(id, updateDto);
-		//	if (movieModel == null)
-		//	{
-		//		return NotFound();
-		//	}
-		//	return Ok(movieModel.ToCinemaDto());
-		//}
-
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
@@ -66,5 +48,26 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 			}
 			return NoContent();
 		}
-	}
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateMovieRequestDto movieDto)
+        {
+            var movie = new Movie
+            {
+                Title = movieDto.Title,
+                ShortDescription = movieDto.ShortDescription,
+                Description = movieDto.Description,
+                LengthInMinutes = movieDto.LengthInMinutes,
+                OriginalTitle = movieDto.OriginalTitle,
+                Genre = movieDto.Genre,
+                Year = movieDto.Year,
+                Country = movieDto.Country,
+                CoverImage = movieDto.CoverImage,
+                BackgroundImage = movieDto.BackgroundImage
+            };
+
+            var createdMovie = await _movieRepo.CreateAsync(movie);
+            return CreatedAtAction(nameof(GetById), new { id = createdMovie.Id }, createdMovie);
+        }
+    }
 }

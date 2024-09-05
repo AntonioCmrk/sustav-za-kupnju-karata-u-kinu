@@ -31,5 +31,31 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
             memoryStream.Position = 0;
             return File(memoryStream, "image/jpeg");
         }
+        [HttpPost("Upload")]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var uploadsFolder = Path.Combine(_hostEnvironment.ContentRootPath, "images");
+
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            var fileName = Path.GetRandomFileName() + Path.GetExtension(file.FileName);
+
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            await using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return Ok(new { FilePath = filePath, FileName = fileName });
+        }
     }
 }

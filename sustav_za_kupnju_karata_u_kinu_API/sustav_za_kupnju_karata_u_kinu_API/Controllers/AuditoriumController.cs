@@ -24,5 +24,15 @@ namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
             }
             return Ok(auditoriumDetails);
         }
+        [HttpGet("cinema/{cinemaId}")]
+        public async Task<IActionResult> GetAuditoriumsByCinemaId(int cinemaId)
+        {
+            var auditoriums = await _auditoriumRepository.GetAuditoriumsByCinemaIdAsync(cinemaId);
+            if (auditoriums == null || auditoriums.Count == 0)
+            {
+                return NotFound("No auditoriums found for the given cinema.");
+            }
+            return Ok(auditoriums);
+        }
     }
 }

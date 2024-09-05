@@ -8,6 +8,8 @@ import { Auth } from "../pages/Auth";
 import PrivateRoute from "./PrivateRoute";
 import { Dashboard } from "../pages/Dashboard";
 import { SuccessPurchase } from "../pages/SuccessPurchase";
+import { UsersTickets } from "../pages/UsersTickets";
+import PrivateAdminRoute from "./PrivateAdminRoute";
 
 export const NavigationRoutes = () => {
   return (
@@ -21,8 +23,16 @@ export const NavigationRoutes = () => {
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute>
+          <PrivateAdminRoute>
             <Dashboard />
+          </PrivateAdminRoute>
+        }
+      />
+      <Route
+        path="/user-tickets"
+        element={
+          <PrivateRoute>
+            <UsersTickets />
           </PrivateRoute>
         }
       />

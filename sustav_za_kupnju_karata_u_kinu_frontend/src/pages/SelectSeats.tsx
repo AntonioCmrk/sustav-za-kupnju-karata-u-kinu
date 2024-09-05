@@ -18,6 +18,7 @@ export const SelectSeats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [isBlockchainLoading, setIsBlockchainLoading] = useState(false); // New loading state for blockchain interaction
   const token = useSelector((state: RootState) => state.auth.token);
 
   const projection = useSelector(
@@ -55,11 +56,7 @@ export const SelectSeats = () => {
     {
       onSuccess: (data) => {
         alert("Reservation successful!");
-
         setSelectedSeats([]);
-
-        handleBlockchainReservation(data);
-
         dispatch(
           setReservationDetails({
             userName: data.userName,
@@ -72,7 +69,6 @@ export const SelectSeats = () => {
             ),
           })
         );
-
         navigate("/success-purchase");
       },
       onError: (error: any) => {
@@ -91,10 +87,11 @@ export const SelectSeats = () => {
 
   const handleBlockchainReservation = async (
     reservationData: ReservationData
-  ) => {
+  ): Promise<boolean> => {
     try {
+      setIsBlockchainLoading(true); // Set loading to true when transaction starts
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
+      await provider.send("eth_requestAccounts", []); // Ensure account access is requested only once
       const signer = await provider.getSigner();
 
       const reservationContractAddress = CONTRACT_ADDRESS;
@@ -109,6 +106,7 @@ export const SelectSeats = () => {
         column: seat.column,
       }));
 
+      // Combine everything into a single transaction
       const tx = await reservationContract.createReservation(
         reservationData.reservationId,
         reservationData.userId,
@@ -122,16 +120,22 @@ export const SelectSeats = () => {
         seats,
         Math.floor(new Date().getTime() / 1000)
       );
-      await tx.wait();
+
+      await tx.wait(); // Wait for the transaction to complete
+
+      setIsBlockchainLoading(false); // Set loading to false when transaction completes
+      return true; // Return success
     } catch (err) {
       const errorMessage =
         (err as Error).message || "An unknown error occurred";
       console.error("Failed to save reservation:", errorMessage);
-      alert("Failed to save reservation to the blockchain: " + errorMessage);
+
+      setIsBlockchainLoading(false); // Set loading to false on error
+      return false; // Return failure
     }
   };
 
-  const handleReserve = () => {
+  const handleReserve = async () => {
     if (!token) {
       alert("You need to be logged in to reserve seats.");
       navigate("/auth");
@@ -143,10 +147,40 @@ export const SelectSeats = () => {
       return;
     }
 
-    reserve({ projectionId: projection.id, seatIds: selectedSeats });
+    const reservationData = {
+      reservationId: 0,
+      userId: "user-id",
+      userName: "username",
+      cinemaName: "cinema name",
+      auditoriumName: "auditorium name",
+      movieName: "movie name",
+      projectionDateTime: projection.dateTime,
+      seats: selectedSeats.map((seatId) => ({
+        row: 1,
+        column: seatId,
+      })),
+    };
+
+    const blockchainSuccess = await handleBlockchainReservation(
+      reservationData
+    );
+
+    if (blockchainSuccess) {
+      reserve({
+        projectionId: projection.id,
+        seatIds: selectedSeats,
+      });
+    } else {
+      alert("Blockchain reservation failed. Reservation was not completed.");
+    }
   };
 
-  if (isLoadingSeats || isLoadingReservations || isReserving)
+  if (
+    isLoadingSeats ||
+    isLoadingReservations ||
+    isReserving ||
+    isBlockchainLoading
+  )
     return <p className="text-primary-light">Loading...</p>;
   if (isErrorSeats || isErrorReservations)
     return (
@@ -251,8 +285,9 @@ export const SelectSeats = () => {
       <button
         className="mt-6 w-full py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg shadow-md"
         onClick={handleReserve}
+        disabled={isBlockchainLoading} // Disable button while loading
       >
-        Reserve Selected Seats
+        {isBlockchainLoading ? "Reserving..." : "Reserve Selected Seats"}
       </button>
     </div>
   );

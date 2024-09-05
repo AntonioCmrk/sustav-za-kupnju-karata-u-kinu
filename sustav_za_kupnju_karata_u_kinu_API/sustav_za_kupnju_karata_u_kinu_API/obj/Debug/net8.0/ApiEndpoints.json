@@ -33,6 +33,22 @@
   },
   {
     "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.AuditoriumController",
+    "Method": "GetAuditoriumsByCinemaId",
+    "RelativePath": "api/Auditorium/cinema/{cinemaId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cinemaId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.AuditoriumController",
     "Method": "GetAuditoriumDetails",
     "RelativePath": "api/Auditorium/noSeatsColumns/{auditoriumId}",
     "HttpMethod": "GET",
@@ -138,6 +154,22 @@
   },
   {
     "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.MovieController",
+    "Method": "Create",
+    "RelativePath": "api/Movie",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "movieDto",
+        "Type": "sustav_za_kupnju_karata_u_kinu_API.Dtos.CreateMovieRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.MovieController",
     "Method": "GetById",
     "RelativePath": "api/Movie/{id}",
     "HttpMethod": "GET",
@@ -176,6 +208,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ProjectionController",
+    "Method": "Create",
+    "RelativePath": "api/Projection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createProjectionDto",
+        "Type": "sustav_za_kupnju_karata_u_kinu_API.Dtos.Projection.CreateProjectionRequestDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -296,6 +344,22 @@
         "Name": "filename",
         "Type": "System.String",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
+    "Method": "UploadImage",
+    "RelativePath": "Image/Upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
