@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{DD937340-E52A-47C9-8096-3758FFD36ECE}|sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API.csproj|c:\\users\\cmrka\\documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_api\\sustav_za_kupnju_karata_u_kinu_api\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD937340-E52A-47C9-8096-3758FFD36ECE}|sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API.csproj|solutionrelative:sustav_za_kupnju_karata_u_kinu_api\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{DD937340-E52A-47C9-8096-3758FFD36ECE}|sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API.csproj|c:\\users\\cmrka\\documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_api\\sustav_za_kupnju_karata_u_kinu_api\\controllers\\projectioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DD937340-E52A-47C9-8096-3758FFD36ECE}|sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API.csproj|solutionrelative:sustav_za_kupnju_karata_u_kinu_api\\controllers\\projectioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -39,19 +43,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ProjectionController.cs",
-              "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
-              "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
-              "ToolTip": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
-              "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
-              "ViewState": "AgIAAKMAAAAAAAAAAAAYwMYAAAAhAAAAAAAAAA==",
+              "Title": "ImageController.cs",
+              "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ImageController.cs",
+              "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ImageController.cs",
+              "ToolTip": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ImageController.cs",
+              "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ImageController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwDkAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T14:39:15.843Z",
+              "WhenOpened": "2024-09-08T15:28:28.772Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Program.cs",
               "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Program.cs",
@@ -59,12 +63,11 @@
               "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Program.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAAAGYAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T09:28:03.246Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-07T09:28:03.246Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "IProjectionReservationRepository.cs",
               "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Interfaces\\IProjectionReservationRepository.cs",
               "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Interfaces\\IProjectionReservationRepository.cs",
@@ -72,12 +75,11 @@
               "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Interfaces\\IProjectionReservationRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T09:24:12.723Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-07T09:24:12.723Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ProjectionReservationRepository.cs",
               "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Repository\\ProjectionReservationRepository.cs",
               "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Repository\\ProjectionReservationRepository.cs",
@@ -85,12 +87,11 @@
               "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Repository\\ProjectionReservationRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T09:23:58.416Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-07T09:23:58.416Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "ProjectionReservationController.cs",
               "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionReservationController.cs",
               "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionReservationController.cs",
@@ -98,12 +99,11 @@
               "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionReservationController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T09:23:36.031Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-07T09:23:36.031Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ReservationSeat.cs",
               "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Models\\ReservationSeat.cs",
               "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Models\\ReservationSeat.cs",
@@ -111,7 +111,25 @@
               "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Models\\ReservationSeat.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-07T09:24:53.858Z",
+              "WhenOpened": "2024-09-07T09:24:53.858Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 292,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ProjectionController.cs",
+              "DocumentMoniker": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
+              "RelativeDocumentMoniker": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
+              "ToolTip": "C:\\Users\\cmrka\\Documents\\temp\\diplomski\\sustav-za-kupnju-karata-u-kinu\\sustav_za_kupnju_karata_u_kinu_API\\sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
+              "RelativeToolTip": "sustav_za_kupnju_karata_u_kinu_API\\Controllers\\ProjectionController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMYAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-07T14:39:15.843Z",
               "EditorCaption": ""
             }
           ]

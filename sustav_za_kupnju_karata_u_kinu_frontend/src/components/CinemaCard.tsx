@@ -8,9 +8,6 @@ export const CinemaCard = ({ cinema }: any) => {
           src={IMG_URL + cinema.image}
           alt={cinema.name}
           className="rounded-2xl w-64 h-96 object-cover m-4"
-          onError={(e) =>
-            (e.currentTarget.src = IMG_URL + "default_cinema.jpg")
-          }
         />
       </div>
       <div className="m-4 my-auto">

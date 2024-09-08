@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createCinema } from "../api/createCinema";
 import { CreateCinemaRequestDto } from "../types";
 import toast from "react-hot-toast";
+import { uploadImage } from "../api/uploadImage";
 
 export const CreateCinema: React.FC = () => {
   const [cinema, setCinema] = useState<CreateCinemaRequestDto>({
@@ -23,6 +24,13 @@ export const CreateCinema: React.FC = () => {
       },
     ],
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -82,19 +90,38 @@ export const CreateCinema: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const totalSeats = cinema.auditoriums.reduce(
-      (total, auditorium) =>
-        total + auditorium.numberOfRows * auditorium.numberOfColumns,
-      0
-    );
-
-    const cinemaData = {
-      ...cinema,
-      numberOfSeats: totalSeats,
-    };
+    if (!selectedFile) {
+      toast.error("Please upload an image first.", {
+        position: "bottom-center",
+      });
+      return;
+    }
 
     try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const uploadResponse = await uploadImage(formData);
+
+      if (!uploadResponse.data?.fileName) {
+        throw new Error("Image upload failed. No filename returned.");
+      }
+
+      const { fileName } = uploadResponse.data;
+
+      const totalSeats = cinema.auditoriums.reduce(
+        (total, auditorium) =>
+          total + auditorium.numberOfRows * auditorium.numberOfColumns,
+        0
+      );
+
+      const cinemaData = {
+        ...cinema,
+        image: fileName,
+        numberOfSeats: totalSeats,
+      };
+
       await createCinema(cinemaData);
+
       toast.success("Cinema created successfully!", {
         position: "bottom-center",
       });
@@ -118,7 +145,9 @@ export const CreateCinema: React.FC = () => {
           },
         ],
       });
+      setSelectedFile(null);
     } catch (error) {
+      console.error("Error creating cinema:", error);
       toast.error("Error creating cinema. Please try again.", {
         position: "bottom-center",
       });
@@ -158,13 +187,11 @@ export const CreateCinema: React.FC = () => {
         </div>
         <div className="mb-4">
           <label className="block text-primary-dark text-sm font-bold mb-2">
-            Image URL
+            Upload Image
           </label>
           <input
-            type="text"
-            name="image"
-            value={cinema.image}
-            onChange={(e) => handleInputChange(e)}
+            type="file"
+            onChange={handleFileChange}
             className="w-full p-2 border border-primary-light rounded"
           />
         </div>

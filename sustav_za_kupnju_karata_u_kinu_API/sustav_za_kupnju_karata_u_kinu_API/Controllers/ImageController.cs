@@ -3,7 +3,7 @@
 namespace sustav_za_kupnju_karata_u_kinu_API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[Controller]")]
     public class ImageController : ControllerBase
     {
         private readonly IWebHostEnvironment _hostEnvironment;

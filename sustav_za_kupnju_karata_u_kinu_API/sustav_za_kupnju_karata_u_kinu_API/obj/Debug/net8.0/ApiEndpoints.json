@@ -143,6 +143,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
+    "Method": "GetImage",
+    "RelativePath": "api/Image/{filename}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "filename",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
+    "Method": "UploadImage",
+    "RelativePath": "api/Image/Upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.MovieController",
     "Method": "GetAll",
     "RelativePath": "api/Movie",
@@ -344,38 +376,6 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
-    "Method": "GetImage",
-    "RelativePath": "Image/{filename}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "filename",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "sustav_za_kupnju_karata_u_kinu_API.Controllers.ImageController",
-    "Method": "UploadImage",
-    "RelativePath": "Image/Upload",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "file",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []

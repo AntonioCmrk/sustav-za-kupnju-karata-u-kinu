@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { createMovie } from "../api/createMovie";
+import { uploadImage } from "../api/uploadImage";
 import { CreateMovieRequestDto } from "../types";
 import toast from "react-hot-toast";
 
@@ -17,6 +18,24 @@ export const AddMovie: React.FC = () => {
     backgroundImage: "",
   });
 
+  const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null);
+  const [selectedBackgroundFile, setSelectedBackgroundFile] =
+    useState<File | null>(null);
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "cover" | "background"
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      if (type === "cover") {
+        setSelectedCoverFile(file);
+      } else {
+        setSelectedBackgroundFile(file);
+      }
+    }
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -28,10 +47,48 @@ export const AddMovie: React.FC = () => {
     e.preventDefault();
 
     try {
-      await createMovie(movie);
+      let coverFileName = "";
+      let backgroundFileName = "";
+
+      // Step 1: Upload cover image
+      if (selectedCoverFile) {
+        const formData = new FormData();
+        formData.append("file", selectedCoverFile);
+        const uploadResponse = await uploadImage(formData);
+        if (uploadResponse.data?.fileName) {
+          coverFileName = uploadResponse.data.fileName;
+        } else {
+          throw new Error("Failed to upload cover image.");
+        }
+      }
+
+      // Step 2: Upload background image
+      if (selectedBackgroundFile) {
+        const formData = new FormData();
+        formData.append("file", selectedBackgroundFile);
+        const uploadResponse = await uploadImage(formData);
+        if (uploadResponse.data?.fileName) {
+          backgroundFileName = uploadResponse.data.fileName;
+        } else {
+          throw new Error("Failed to upload background image.");
+        }
+      }
+
+      // Step 3: Prepare movie data with uploaded file names
+      const movieData = {
+        ...movie,
+        coverImage: coverFileName, // Set the cover image file name
+        backgroundImage: backgroundFileName, // Set the background image file name
+      };
+
+      // Step 4: Create the movie
+      await createMovie(movieData);
+
       toast.success("Movie created successfully!", {
         position: "bottom-center",
       });
+
+      // Reset the form after successful submission
       setMovie({
         title: "",
         shortDescription: "",
@@ -44,7 +101,10 @@ export const AddMovie: React.FC = () => {
         coverImage: "",
         backgroundImage: "",
       });
+      setSelectedCoverFile(null);
+      setSelectedBackgroundFile(null);
     } catch (error) {
+      console.error("Error creating movie:", error);
       toast.error("Failed to create the movie. Please try again.", {
         position: "bottom-center",
       });
@@ -114,6 +174,28 @@ export const AddMovie: React.FC = () => {
 
         <div className="mb-4">
           <label className="block text-primary-dark text-sm font-bold mb-2">
+            Upload Cover Image
+          </label>
+          <input
+            type="file"
+            onChange={(e) => handleFileChange(e, "cover")}
+            className="w-full p-2 border border-primary-light rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-primary-dark text-sm font-bold mb-2">
+            Upload Background Image
+          </label>
+          <input
+            type="file"
+            onChange={(e) => handleFileChange(e, "background")}
+            className="w-full p-2 border border-primary-light rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-primary-dark text-sm font-bold mb-2">
             Original Title
           </label>
           <input
@@ -162,34 +244,6 @@ export const AddMovie: React.FC = () => {
             type="text"
             name="country"
             value={movie.country}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-primary-light rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-primary-dark text-sm font-bold mb-2">
-            Cover Image URL
-          </label>
-          <input
-            type="text"
-            name="coverImage"
-            value={movie.coverImage}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-primary-light rounded"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-primary-dark text-sm font-bold mb-2">
-            Background Image URL
-          </label>
-          <input
-            type="text"
-            name="backgroundImage"
-            value={movie.backgroundImage}
             onChange={handleInputChange}
             className="w-full p-2 border border-primary-light rounded"
             required

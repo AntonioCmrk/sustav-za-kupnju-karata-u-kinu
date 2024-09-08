@@ -20,13 +20,14 @@ export const SelectSeats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [selectedRowCol, setSelectedRowCol] = useState<Seat[]>([]);
+
   const [showModal, setShowModal] = useState(false);
   const [isBlockchainLoading, setIsBlockchainLoading] = useState(false);
   const token = useSelector((state: RootState) => state.auth.token);
   const projection = useSelector(
     (state: RootState) => state.projection.selectedProjection
   );
-
   const {
     data: auditoriumDetailsResponse,
     isLoading: isLoadingSeats,
@@ -99,11 +100,20 @@ export const SelectSeats = () => {
     }
   );
 
-  const handleSeatClick = (seatId: number) => {
+  const handleSeatClick = (seatId: number, row: number, col: number) => {
     setSelectedSeats((prevSelectedSeats) =>
       prevSelectedSeats.includes(seatId)
         ? prevSelectedSeats.filter((id) => id !== seatId)
         : [...prevSelectedSeats, seatId]
+    );
+    setSelectedRowCol((prevSelectedRowCol: any) =>
+      prevSelectedRowCol.some(
+        (seat: Seat) => seat.row === row && seat.column === col
+      )
+        ? prevSelectedRowCol.filter(
+            (seat: Seat) => !(seat.row === row && seat.column === col)
+          )
+        : [...prevSelectedRowCol, { row, column: col }]
     );
   };
 
@@ -232,7 +242,9 @@ export const SelectSeats = () => {
         columnSeats.push(
           <div
             key={`seat-${row}-${col}`}
-            onClick={() => !isReserved && handleSeatClick(seat.seatId)}
+            onClick={() =>
+              !isReserved && handleSeatClick(seat.seatId, row, col)
+            }
             data-tooltip-id="already-taken-seat"
             data-tooltip-content={`${
               isReserved ? "This seat is already taken." : ""
@@ -288,10 +300,7 @@ export const SelectSeats = () => {
 
       {showModal && (
         <ConfirmModal
-          seats={selectedSeats.map((seatId) => ({
-            row: 1,
-            column: seatId,
-          }))}
+          seats={selectedRowCol}
           pricePerSeat={pricePerSeat}
           totalPrice={totalPrice}
           movieName={projection.movieTitle}
