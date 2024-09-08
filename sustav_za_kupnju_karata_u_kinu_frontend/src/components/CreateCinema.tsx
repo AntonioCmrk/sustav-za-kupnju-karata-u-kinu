@@ -156,7 +156,6 @@ export const CreateCinema: React.FC = () => {
             className="w-full p-2 border border-primary-light rounded dec [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
-        {/* Image URL */}
         <div className="mb-4">
           <label className="block text-primary-dark text-sm font-bold mb-2">
             Image URL
@@ -170,7 +169,6 @@ export const CreateCinema: React.FC = () => {
           />
         </div>
 
-        {/* Address Section */}
         <h2 className="text-xl text-primary-dark font-bold mb-4">Address</h2>
         <div className="mb-4">
           <label className="block text-primary-dark text-sm font-bold mb-2">
@@ -233,7 +231,6 @@ export const CreateCinema: React.FC = () => {
           />
         </div>
 
-        {/* Auditoriums Section */}
         <h2 className="text-xl text-primary-dark font-bold mb-4">
           Auditoriums
         </h2>

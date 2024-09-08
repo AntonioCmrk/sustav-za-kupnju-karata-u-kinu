@@ -68,6 +68,9 @@ export const MovieDetails = () => {
           src={IMG_URL + projectionDetails.backgroundImage}
           alt={projectionDetails.movieTitle}
           className="w-full h-full object-cover rounded-t-lg"
+          onError={(e) =>
+            (e.currentTarget.src = IMG_URL + "default_background.jpg")
+          }
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40" />
       </div>

@@ -105,6 +105,7 @@ builder.Services.AddScoped<IProjectionRepository, ProjectionRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuditoriumRepository, AuditoriumRepository>();
+builder.Services.AddScoped<IProjectionReservationRepository, ProjectionReservationRepository>();
 
 var app = builder.Build();
 

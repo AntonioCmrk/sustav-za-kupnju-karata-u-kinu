@@ -10,6 +10,7 @@ export const ChechUserReservations = () => {
   const [loading, setLoading] = useState(false);
 
   const reservationContractAddress = CONTRACT_ADDRESS;
+
   const handleFetchReservations = async () => {
     if (!username.trim()) {
       alert("Please enter a valid username.");
@@ -32,21 +33,37 @@ export const ChechUserReservations = () => {
         username
       );
 
-      const formattedReservations = reservations.map((reservation: any) => ({
-        reservationId: reservation.reservationId,
-        userId: reservation.userId,
-        userName: reservation.userName,
-        cinemaName: reservation.cinemaName,
-        auditoriumName: reservation.auditoriumName,
-        movieName: reservation.movieName,
-        projectionDateTime: new Date(
-          Number(reservation.projectionDateTime) * 1000
-        ).toLocaleString(),
-        seats: reservation.seats,
-        reservationTime: new Date(
-          Number(reservation.reservationTime) * 1000
-        ).toLocaleString(),
-      }));
+      const filter = reservationContract.filters.ReservationCreated();
+      const events = await reservationContract.queryFilter(filter);
+
+      const formattedReservations = reservations.map((reservation: any) => {
+        const matchingEvent = events.find(
+          (event: any) =>
+            event.args.reservationId.toString() ===
+            reservation.reservationId.toString()
+        );
+
+        const transactionHash = matchingEvent
+          ? matchingEvent.transactionHash
+          : "N/A";
+
+        return {
+          reservationId: reservation.reservationId,
+          userId: reservation.userId,
+          userName: reservation.userName,
+          cinemaName: reservation.cinemaName,
+          auditoriumName: reservation.auditoriumName,
+          movieName: reservation.movieName,
+          projectionDateTime: new Date(
+            Number(reservation.projectionDateTime) * 1000
+          ).toLocaleString(),
+          seats: reservation.seats,
+          reservationTime: new Date(
+            Number(reservation.reservationTime) * 1000
+          ).toLocaleString(),
+          transactionHash: transactionHash,
+        };
+      });
 
       setReservations(formattedReservations);
     } catch (error: any) {
@@ -110,16 +127,32 @@ export const ChechUserReservations = () => {
                 </p>
                 <p>
                   <strong>Seats:</strong>{" "}
-                  {reservation.seats
-                    .map(
-                      (seat: Seat) => `Row: ${seat.row}, Col: ${seat.column}`
-                    )
-                    .join(", ")}
+                  <ul className="list-disc pl-6">
+                    {reservation.seats.map((seat: Seat, seatIndex: number) => (
+                      <li key={seatIndex}>
+                        Row: {seat[0].toString()}, Col: {seat[1].toString()}
+                      </li>
+                    ))}
+                  </ul>{" "}
                 </p>
                 <p>
                   <strong>Reservation Time:</strong>{" "}
                   {reservation.reservationTime}
                 </p>
+                {reservation.transactionHash &&
+                  reservation.transactionHash !== "N/A" && (
+                    <p>
+                      <strong>Transaction:</strong>{" "}
+                      <a
+                        href={`https://sepolia.etherscan.io/tx/${reservation.transactionHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline"
+                      >
+                        View on Etherscan
+                      </a>
+                    </p>
+                  )}
               </li>
             ))}
           </ul>

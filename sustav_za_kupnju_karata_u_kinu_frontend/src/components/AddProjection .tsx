@@ -15,7 +15,7 @@ export const AddProjection: React.FC = () => {
   const [projection, setProjection] = useState({
     movieId: 0,
     auditoriumId: 0,
-    dateTime: new Date(), // Default to current date/time
+    dateTime: new Date(),
     price: 0,
   });
 

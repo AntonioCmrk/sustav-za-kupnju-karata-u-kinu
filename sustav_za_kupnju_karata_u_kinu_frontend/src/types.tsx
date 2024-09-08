@@ -49,6 +49,10 @@ export interface Seat {
   row: number;
   column: number;
 }
+export interface Seat {
+  0: bigint;
+  1: bigint;
+}
 
 export interface ReservationData {
   reservationId: number;
@@ -71,6 +75,7 @@ export interface Reservation {
   projectionDateTime: number;
   seats: Seat[];
   reservationTime: number;
+  transactionHash?: string;
 }
 
 export interface Auditorium {
@@ -132,4 +137,13 @@ export interface Movie {
   country: string;
   coverImage: string;
   backgroundImage: string;
+}
+
+export interface ConfirmModalProps {
+  seats: { row: number; column: number }[];
+  movieName: string;
+  pricePerSeat: number;
+  totalPrice: number;
+  onConfirm: () => void;
+  onCancel: () => void;
 }

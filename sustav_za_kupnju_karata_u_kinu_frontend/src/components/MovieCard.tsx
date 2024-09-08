@@ -8,6 +8,7 @@ export const MovieCard = ({ projection }: any) => {
         src={IMG_URL + movieCoverImage}
         alt={movieTitle}
         className="rounded-t-2xl w-full h-full object-cover"
+        onError={(e) => (e.currentTarget.src = IMG_URL + "default_cover.jpg")}
       />
       <div className="mt-2 text-center">
         <h3 className="text-lg font-semibold p-4 text-primary-dark">

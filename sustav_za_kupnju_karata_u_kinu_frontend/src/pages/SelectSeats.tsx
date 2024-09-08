@@ -5,6 +5,7 @@ import { RootState } from "../state/store";
 import { getNoSeatRowColumn } from "../api/getNoSeatRowColumn";
 import { getSeatReservations } from "../api/getSeatReservations";
 import { reserveSeats } from "../api/reserveSeats";
+import { deleteProjectionReservation } from "../api/deleteProjectionReservation";
 import { ethers } from "ethers";
 import reservationContractAbi from "../abi/reservationContractAbi.json";
 import { useNavigate } from "react-router-dom";
@@ -13,14 +14,15 @@ import { ReservationData, Seat } from "../types";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { Tooltip } from "react-tooltip";
 import { CONTRACT_ADDRESS } from "../constants";
+import ConfirmModal from "../components/ConfirmModal";
 
 export const SelectSeats = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
-  const [isBlockchainLoading, setIsBlockchainLoading] = useState(false); // New loading state for blockchain interaction
+  const [showModal, setShowModal] = useState(false);
+  const [isBlockchainLoading, setIsBlockchainLoading] = useState(false);
   const token = useSelector((state: RootState) => state.auth.token);
-
   const projection = useSelector(
     (state: RootState) => state.projection.selectedProjection
   );
@@ -33,9 +35,7 @@ export const SelectSeats = () => {
   } = useQuery(
     ["getSeatReservations", projection?.auditoriumId],
     () => getNoSeatRowColumn(projection.auditoriumId),
-    {
-      enabled: !!projection?.auditoriumId,
-    }
+    { enabled: !!projection?.auditoriumId }
   );
 
   const {
@@ -46,30 +46,52 @@ export const SelectSeats = () => {
   } = useQuery(
     ["reservations", projection?.id],
     () => getSeatReservations(projection.id),
-    {
-      enabled: !!projection?.id,
-    }
+    { enabled: !!projection?.id }
   );
 
   const { mutate: reserve, isLoading: isReserving } = useMutation(
     reserveSeats,
     {
-      onSuccess: (data) => {
-        alert("Reservation successful!");
-        setSelectedSeats([]);
-        dispatch(
-          setReservationDetails({
-            userName: data.userName,
-            movieName: data.movieName,
-            cinemaName: data.cinemaName,
-            auditoriumName: data.auditoriumName,
-            seats: data.seats,
-            projectionDateTime: Math.floor(
-              new Date(data.projectionDateTime).getTime() / 1000
-            ),
-          })
-        );
-        navigate("/success-purchase");
+      onSuccess: async (data) => {
+        console.log("Reservation API response:", data);
+
+        try {
+          setIsBlockchainLoading(true);
+
+          if (!data.reservationId) {
+            throw new Error("Reservation ID is missing from the response.");
+          }
+
+          await handleBlockchainReservation(data);
+
+          dispatch(
+            setReservationDetails({
+              userName: data.userName,
+              movieName: data.movieName,
+              cinemaName: data.cinemaName,
+              auditoriumName: data.auditoriumName,
+              seats: data.seats,
+              projectionDateTime: Math.floor(
+                new Date(data.projectionDateTime).getTime() / 1000
+              ),
+            })
+          );
+
+          navigate("/success-purchase");
+        } catch (error) {
+          alert("Blockchain reservation failed. ");
+
+          if (data?.reservationId) {
+            await deleteProjectionReservation(data.reservationId);
+            navigate("/cinema-page");
+          } else {
+            console.error(
+              "Reservation ID is missing. Cannot delete reservation."
+            );
+          }
+        } finally {
+          setIsBlockchainLoading(false);
+        }
       },
       onError: (error: any) => {
         alert(`Reservation failed: ${error.message}`);
@@ -87,13 +109,11 @@ export const SelectSeats = () => {
 
   const handleBlockchainReservation = async (
     reservationData: ReservationData
-  ): Promise<boolean> => {
+  ) => {
     try {
-      setIsBlockchainLoading(true); // Set loading to true when transaction starts
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []); // Ensure account access is requested only once
+      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
-
       const reservationContractAddress = CONTRACT_ADDRESS;
       const reservationContract = new ethers.Contract(
         reservationContractAddress,
@@ -106,7 +126,6 @@ export const SelectSeats = () => {
         column: seat.column,
       }));
 
-      // Combine everything into a single transaction
       const tx = await reservationContract.createReservation(
         reservationData.reservationId,
         reservationData.userId,
@@ -121,21 +140,13 @@ export const SelectSeats = () => {
         Math.floor(new Date().getTime() / 1000)
       );
 
-      await tx.wait(); // Wait for the transaction to complete
-
-      setIsBlockchainLoading(false); // Set loading to false when transaction completes
-      return true; // Return success
+      await tx.wait();
     } catch (err) {
-      const errorMessage =
-        (err as Error).message || "An unknown error occurred";
-      console.error("Failed to save reservation:", errorMessage);
-
-      setIsBlockchainLoading(false); // Set loading to false on error
-      return false; // Return failure
+      throw new Error("Failed to save reservation on blockchain.");
     }
   };
 
-  const handleReserve = async () => {
+  const handleReserve = () => {
     if (!token) {
       alert("You need to be logged in to reserve seats.");
       navigate("/auth");
@@ -147,32 +158,12 @@ export const SelectSeats = () => {
       return;
     }
 
-    const reservationData = {
-      reservationId: 0,
-      userId: "user-id",
-      userName: "username",
-      cinemaName: "cinema name",
-      auditoriumName: "auditorium name",
-      movieName: "movie name",
-      projectionDateTime: projection.dateTime,
-      seats: selectedSeats.map((seatId) => ({
-        row: 1,
-        column: seatId,
-      })),
-    };
+    setShowModal(true);
+  };
 
-    const blockchainSuccess = await handleBlockchainReservation(
-      reservationData
-    );
-
-    if (blockchainSuccess) {
-      reserve({
-        projectionId: projection.id,
-        seatIds: selectedSeats,
-      });
-    } else {
-      alert("Blockchain reservation failed. Reservation was not completed.");
-    }
+  const confirmReservation = () => {
+    setShowModal(false);
+    reserve({ projectionId: projection.id, seatIds: selectedSeats });
   };
 
   if (
@@ -182,6 +173,7 @@ export const SelectSeats = () => {
     isBlockchainLoading
   )
     return <p className="text-primary-light">Loading...</p>;
+
   if (isErrorSeats || isErrorReservations)
     return (
       <p className="text-error">
@@ -190,6 +182,7 @@ export const SelectSeats = () => {
           (errorReservations as Error)?.message}
       </p>
     );
+
   if (!auditoriumDetailsResponse?.data || !reservationsResponse?.data)
     return <p className="text-primary-light">No data available.</p>;
 
@@ -269,6 +262,9 @@ export const SelectSeats = () => {
     return seats;
   };
 
+  const pricePerSeat = projection.price;
+  const totalPrice = selectedSeats.length * pricePerSeat;
+
   return (
     <div className="p-6 bg-primary-dark text-quaternary-light rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4">Select your seats:</h2>
@@ -285,10 +281,24 @@ export const SelectSeats = () => {
       <button
         className="mt-6 w-full py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg shadow-md"
         onClick={handleReserve}
-        disabled={isBlockchainLoading} // Disable button while loading
+        disabled={isBlockchainLoading}
       >
         {isBlockchainLoading ? "Reserving..." : "Reserve Selected Seats"}
       </button>
+
+      {showModal && (
+        <ConfirmModal
+          seats={selectedSeats.map((seatId) => ({
+            row: 1,
+            column: seatId,
+          }))}
+          pricePerSeat={pricePerSeat}
+          totalPrice={totalPrice}
+          movieName={projection.movieTitle}
+          onConfirm={confirmReservation}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };
