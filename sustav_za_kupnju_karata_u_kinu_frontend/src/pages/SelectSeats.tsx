@@ -135,7 +135,7 @@ export const SelectSeats = () => {
         row: seat.row,
         column: seat.column,
       }));
-
+      console.log(seats);
       const tx = await reservationContract.createReservation(
         reservationData.reservationId,
         reservationData.userId,
